@@ -1,0 +1,70 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.Master.cs" Inherits="SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><asp:ContentPlaceHolder ID="title" runat="server">Quản lý sự kiện nội bộ</asp:ContentPlaceHolder></title>
+
+
+    <link href="Assets/css/reset.css" rel="stylesheet" />
+    <link href="Assets/css/style.css" rel="stylesheet" />
+    <link href="Assets/css/responsive.css" rel="stylesheet" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="container header-inner">
+                <div class="logo">
+                    <img src="Assets/images/logo.png" alt="Logo công ty" />
+                    <span>Admin</span>
+                </div>
+                <div class="user-menu">
+                    <img src="Assets/images/avatar-default.png" alt="Avatar" class="avatar" />
+                    <span>Xin chào, <asp:Label ID="lblUserName" runat="server" Text="Guest"></asp:Label></span>
+                    <asp:LinkButton ID="lnkLogout" runat="server" OnClick="lnkLogout_Click" CssClass="logout">Đăng xuất</asp:LinkButton>
+                </div>
+            </div>
+        </header>
+
+        <div class="wrapper">
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <a href="Admin/Dashboard.aspx" class="nav-item active">
+                        <span class="icon">Dashboard</span> Dashboard
+                    </a>
+                    <a href="Admin/Events.aspx" class="nav-item">
+                        <span class="icon">Events</span> Quản lý sự kiện
+                    </a>
+                    <a href="Admin/Users.aspx" class="nav-item">
+                        <span class="icon">Users</span> Quản lý nhân viên
+                    </a>
+                    <a href="User/MyEvents.aspx" class="nav-item">
+                        <span class="icon">My Events</span> Sự kiện của tôi
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="icon">Bell</span> Thông báo
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="icon">Settings</span> Cài đặt
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+            </main>
+        </div>
+
+        <script src="Assets/js/main.js"></script>
+    </form>
+</body>
+</html>

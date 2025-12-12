@@ -1,0 +1,45 @@
+﻿@media (max-width: 992px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .main-content {
+        margin-left: 220px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-inner {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        display: none; /* ẩn sidebar trên mobile */
+    }
+
+        .sidebar.active {
+            display: block;
+        }
+    /* hiện khi bấm menu */
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    /* Thêm nút menu hamburger */
+    .header::before {
+        content: "Menu";
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+}
