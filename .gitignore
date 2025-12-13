@@ -15,6 +15,18 @@ BundleConfig.cs
 RouteConfig.cs
 Global.asax.cs
 
+# BỔ SUNG ASP.NET WEB FORMS (Generated Files)
+*.aspx.designer.cs
+*.ascx.designer.cs
+*.master.designer.cs
+App_Data/*.ldf
+App_Data/*.mdf
+
+# BỔ SUNG FILE CẤU HÌNH RIÊNG TƯ (SECRET CONFIGURATION)
+Web.Private.config
+*.local.config
+*.pubxml
+
 # User-specific files
 *.user
 *.userosscache
@@ -26,6 +38,8 @@ Global.asax.cs
 *.vsix
 *.vsidx
 *.db
+.history/
+*.log
 
 # Auto-generated files
 Generated\ Files/

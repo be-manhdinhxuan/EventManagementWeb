@@ -9,6 +9,19 @@ namespace EventManagementWeb.Account
 {
     public partial class Login : Page
     {
+        private const string ToastSessionKey = "ToastMessage";
+
+        // Phương thức để lưu thông báo vào Session
+        private void SetToast(string title, string message, string type)
+        {
+            // Sử dụng Session để lưu thông tin cần thiết
+            Session[ToastSessionKey] = new
+            {
+                Title = title,
+                Message = message,
+                Type = type // success, error, warning
+            };
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -60,12 +73,12 @@ namespace EventManagementWeb.Account
 
                                     
                                     FormsAuthentication.SetAuthCookie(email, false);
-                                    // ----------------------------------------
+                                    SetToast("Thành công!", "Đăng nhập thành công.", "success");
 
                                     if (Session["Role"].ToString() == "Admin")
                                         Response.Redirect("~/Admin/Dashboard.aspx");
                                     else
-                                        Response.Redirect("~/User/MyEvents.aspx");
+                                        Response.Redirect("~/User/Home.aspx");
                                 }
                                 else
                                 {

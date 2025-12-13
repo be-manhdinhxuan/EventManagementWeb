@@ -150,10 +150,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Account\ForgotPassword.aspx" />
     <Content Include="Account\Login.aspx" />
-    <Content Include="Assets\css\reset.css" />
-    <Content Include="Assets\css\responsive.css" />
+    <Content Include="Account\ResetPassword.aspx" />
+    <Content Include="Admin\Dashboard.aspx" />
+    <Content Include="Assets\css\component\alerts.css" />
+    <Content Include="Assets\css\pages\forgot_pass.css" />
+    <Content Include="Assets\css\pages\reset_pass.css" />
     <Content Include="Assets\css\style.css" />
+    <Content Include="Assets\css\base\typography.css" />
+    <Content Include="Assets\css\base\variables.css" />
+    <Content Include="Assets\css\component\buttons.css" />
+    <Content Include="Assets\css\component\modal.css" />
+    <Content Include="Assets\css\pages\login.css" />
+    <Content Include="Assets\css\base\reset.css" />
+    <Content Include="Assets\images\icon\circle-outline-green.svg" />
+    <Content Include="Assets\images\icon\circle-outline.svg" />
+    <Content Include="Assets\images\icon\error-icon.svg" />
+    <Content Include="Assets\images\icon\eye-close.svg" />
+    <Content Include="Assets\images\icon\eye-open.svg" />
+    <Content Include="Assets\images\icon\success-icon.svg" />
+    <Content Include="Assets\images\icon\warning-icon.svg" />
+    <Content Include="Assets\images\logo.png" />
     <Content Include="Assets\js\main.js" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -180,16 +198,38 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="User\Home.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\ForgotPassword.aspx.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ForgotPassword.aspx.designer.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Account\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ResetPassword.aspx.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ResetPassword.aspx.designer.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -211,6 +251,13 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="User\Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -220,12 +267,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Admin\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Assets\images\" />
     <Folder Include="Models\" />
     <Folder Include="Uploads\" />
-    <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />
