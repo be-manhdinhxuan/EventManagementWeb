@@ -154,6 +154,9 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="Admin\Dashboard.aspx" />
+    <Content Include="Assets\css\common-layout.css" />
+    <Content Include="Assets\css\pages\event.css" />
+    <Content Include="Assets\css\pages\home.css" />
     <Content Include="Assets\css\component\alerts.css" />
     <Content Include="Assets\css\pages\forgot_pass.css" />
     <Content Include="Assets\css\pages\reset_pass.css" />
@@ -164,6 +167,7 @@
     <Content Include="Assets\css\component\modal.css" />
     <Content Include="Assets\css\pages\login.css" />
     <Content Include="Assets\css\base\reset.css" />
+    <Content Include="Assets\images\avatar.jpg" />
     <Content Include="Assets\images\icon\circle-outline-green.svg" />
     <Content Include="Assets\images\icon\circle-outline.svg" />
     <Content Include="Assets\images\icon\error-icon.svg" />
@@ -171,9 +175,13 @@
     <Content Include="Assets\images\icon\eye-open.svg" />
     <Content Include="Assets\images\icon\success-icon.svg" />
     <Content Include="Assets\images\icon\warning-icon.svg" />
+    <Content Include="Assets\images\logo-home.png" />
     <Content Include="Assets\images\logo.png" />
+    <Content Include="Assets\images\sk3.jpg" />
+    <Content Include="Assets\images\sk1.jpg" />
+    <Content Include="Assets\images\sk2.jpg" />
+    <Content Include="Assets\images\teamwork.jpg" />
     <Content Include="Assets\js\main.js" />
-    <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
@@ -197,7 +205,10 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="Site.Master" />
+    <Content Include="Uploads\sk1.jpg" />
+    <Content Include="Uploads\sk2.jpg" />
+    <Content Include="Uploads\sk3.jpg" />
+    <Content Include="User\Event.aspx" />
     <Content Include="User\Home.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -233,23 +244,16 @@
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
+    <Compile Include="User\Event.aspx.cs">
+      <DependentUpon>Event.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Site.Master.designer.cs">
-      <DependentUpon>Site.Master</DependentUpon>
+    <Compile Include="User\Event.aspx.designer.cs">
+      <DependentUpon>Event.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
@@ -269,7 +273,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />
@@ -280,6 +283,13 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <Content Include="Web.Private.config" />
+    <Content Include="Web.Private.Debug.config">
+      <DependentUpon>Web.Private.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Private.Release.config">
+      <DependentUpon>Web.Private.config</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

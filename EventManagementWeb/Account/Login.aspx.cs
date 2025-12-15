@@ -3,7 +3,7 @@ using System.Web.UI;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using BCrypt.Net;
-using System.Web.Security; 
+using System.Web.Security;
 
 namespace EventManagementWeb.Account
 {
@@ -11,22 +11,22 @@ namespace EventManagementWeb.Account
     {
         private const string ToastSessionKey = "ToastMessage";
 
-        // Phương thức để lưu thông báo vào Session
+        
         private void SetToast(string title, string message, string type)
         {
-            // Sử dụng Session để lưu thông tin cần thiết
-            Session[ToastSessionKey] = new
+            
+            Session[ToastSessionKey] = new System.Collections.Generic.Dictionary<string, string>
             {
-                Title = title,
-                Message = message,
-                Type = type // success, error, warning
+                { "Title", title },
+                { "Message", message },
+                { "Type", type }
             };
         }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                
+
                 if (Session["UserId"] != null && User.Identity.IsAuthenticated)
                 {
                     Response.Redirect("~/Admin/Dashboard.aspx");
@@ -65,13 +65,13 @@ namespace EventManagementWeb.Account
 
                                 if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
                                 {
-                                    
+
                                     Session["UserId"] = reader["Id"];
                                     Session["FullName"] = reader["FullName"];
                                     Session["Email"] = email;
                                     Session["Role"] = reader["Role"].ToString();
 
-                                    
+
                                     FormsAuthentication.SetAuthCookie(email, false);
                                     SetToast("Thành công!", "Đăng nhập thành công.", "success");
 

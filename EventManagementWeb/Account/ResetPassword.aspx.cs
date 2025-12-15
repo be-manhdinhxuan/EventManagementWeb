@@ -120,7 +120,6 @@ namespace EventManagementWeb.Account
                     }
                     else
                     {
-                        // Giả sử trang chính của User là ~/User/MyEvents.aspx
                         Response.Redirect("~/User/Home.aspx");
                     }
                 }

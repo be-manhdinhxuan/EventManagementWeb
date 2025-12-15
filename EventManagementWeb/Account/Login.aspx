@@ -8,6 +8,7 @@
     <title>Đăng nhập</title>
     <link href="../Assets/css/base/reset.css" rel="stylesheet" />
     <link href="../Assets/css/style.css" rel="stylesheet" />
+    <link href="../Assets/css/pages/login.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -64,11 +65,10 @@
             // Định nghĩa SVG cho các trạng thái
             let iconSvg = '';
 
-            // Success Icon (SVG bạn cung cấp)
+            
             if (type === 'success') {
                 iconSvg = `<svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M13.3333 0C5.98533 0 0 5.98533 0 13.3333C0 20.6813 5.98533 26.6667 13.3333 26.6667C20.6813 26.6667 26.6667 20.6813 26.6667 13.3333C26.6667 5.98533 20.6813 0 13.3333 0ZM13.3333 2.66667C19.2402 2.66667 24 7.4265 24 13.3333C24 19.2402 19.2402 24 13.3333 24C7.4265 24 2.66667 19.2402 2.66667 13.3333C2.66667 7.4265 7.4265 2.66667 13.3333 2.66667ZM19.0573 8.39062L10.6667 16.7812L7.60937 13.724L5.72396 15.6094L10.6667 20.5521L20.9427 10.276L19.0573 8.39062Z" fill="currentColor"/></svg>`;
             } else if (type === 'error') {
-                // Error Icon (Biểu tượng dấu X hoặc chấm than)
                 iconSvg = `<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M11.7 16.9H14.3V19.5H11.7V16.9ZM11.7 6.5H14.3V14.3H11.7V6.5ZM12.987 0C5.811 0 0 5.824 0 13C0 20.176 5.811 26 12.987 26C20.176 26 26 20.176 26 13C26 5.824 20.176 0 12.987 0ZM13 23.4C7.254 23.4 2.6 18.746 2.6 13C2.6 7.254 7.254 2.6 13 2.6C18.746 2.6 23.4 7.254 23.4 13C23.4 18.746 18.746 23.4 13 23.4Z" fill="currentColor"/>
                             </svg>`;

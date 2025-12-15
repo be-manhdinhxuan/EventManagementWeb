@@ -5,13 +5,7 @@
 @import url('base/typography.css');
 
 
-
-@import url('components/buttons.css');
+@import url('component/buttons.css');
 @import url('component/modal.css');
 @import url('component/alerts.css');
 
-
-
-@import url('pages/login.css');
-@import url('pages/forgot_pass.css');
-@import url('pages/reset_pass.css');

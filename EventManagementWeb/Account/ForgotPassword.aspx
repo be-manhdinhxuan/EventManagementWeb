@@ -8,6 +8,8 @@
     <title>Quên mật khẩu</title>
     <link href="../Assets/css/base/reset.css" rel="stylesheet" />
     <link href="../Assets/css/style.css" rel="stylesheet" />
+    <link href="../Assets/css/pages/forgot_pass.css" rel="stylesheet" />
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -24,8 +26,7 @@
             <asp:Button ID="btnSend" runat="server" Text="Gửi liên kết đặt lại" CssClass="btn-send" OnClick="btnSend_Click" ClientIDMode="Static" />
 
             <div class="cta">
-                <a href="Login.aspx" class='cta-link'>
-                    Quay lại Đăng nhập
+                <a href="Login.aspx" class='cta-link'>Quay lại Đăng nhập
                 </a>
             </div>
 
