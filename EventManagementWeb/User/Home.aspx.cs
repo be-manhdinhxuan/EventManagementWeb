@@ -63,7 +63,7 @@ namespace EventManagementWeb.User
                         (e.MaxCapacity - e.CurrentRegistrations) AS AvailableSlots,
                         ROUND((e.CurrentRegistrations * 100.0 / e.MaxCapacity), 0) AS RegistrationRate
                     FROM Events e
-                    WHERE e.Status = 'Published' 
+                    WHERE e.Status = 'Draft' 
                       AND e.IsDeleted = 0 
                       AND e.StartTime > NOW()
                     ORDER BY e.StartTime ASC
