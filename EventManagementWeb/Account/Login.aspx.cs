@@ -4,17 +4,20 @@ using MySql.Data.MySqlClient;
 using System.Configuration;
 using BCrypt.Net;
 using System.Web.Security;
+using System.Collections.Generic;
 
 namespace EventManagementWeb.Account
 {
     public partial class Login : Page
     {
+
+        public string ErrorMessage = "";
         private const string ToastSessionKey = "ToastMessage";
 
-        
+
         private void SetToast(string title, string message, string type)
         {
-            
+
             Session[ToastSessionKey] = new System.Collections.Generic.Dictionary<string, string>
             {
                 { "Title", title },
@@ -24,24 +27,28 @@ namespace EventManagementWeb.Account
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            // Kiểm tra trạng thái đăng nhập hệ thống
+            if (Session["UserId"] != null && User.Identity.IsAuthenticated)
             {
+                Response.Redirect("~/Admin/Dashboard.aspx");
+            }
 
-                if (Session["UserId"] != null && User.Identity.IsAuthenticated)
-                {
-                    Response.Redirect("~/Admin/Dashboard.aspx");
-                }
+            // Kiểm tra nếu người dùng thực hiện hành động POST dữ liệu từ Form
+            if (Request.HttpMethod == "POST" && Request.Form["btnAction"] == "login")
+            {
+                HandleLogin();
             }
         }
 
-        protected void btnLogin_Click(object sender, EventArgs e)
+        private void HandleLogin()
         {
-            string email = txtEmail.Text.Trim();
-            string password = txtPassword.Text;
+            string email = Request.Form["email"]?.Trim();
+            string password = Request.Form["password"];
 
+            // Kiểm tra tính hợp lệ của dữ liệu đầu vào
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                lblError.Text = "Vui lòng nhập đầy đủ email và mật khẩu";
+                ErrorMessage = "Vui lòng nhập đầy đủ email và mật khẩu";
                 return;
             }
 
@@ -52,9 +59,12 @@ namespace EventManagementWeb.Account
                 try
                 {
                     conn.Open();
+                    // Truy vấn dữ liệu từ MySQL
                     string sql = "SELECT Id, FullName, Password, Role FROM Users WHERE Email = @email AND IsActive = 1 AND IsDeleted = 0 LIMIT 1";
+
                     using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
+                        // Truyền tham số an toàn vào câu lệnh SQL
                         cmd.Parameters.AddWithValue("@email", email);
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -63,18 +73,20 @@ namespace EventManagementWeb.Account
                             {
                                 string hashedPassword = reader["Password"].ToString();
 
+                                // Kiểm tra mật khẩu bằng thư viện BCrypt
                                 if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
                                 {
-
+                                    // Lưu thông tin vào Session để quản lý trạng thái đăng nhập
                                     Session["UserId"] = reader["Id"];
                                     Session["FullName"] = reader["FullName"];
                                     Session["Email"] = email;
                                     Session["Role"] = reader["Role"].ToString();
 
-
+                                    // Tạo Cookie xác thực của ASP.NET
                                     FormsAuthentication.SetAuthCookie(email, false);
                                     SetToast("Thành công!", "Đăng nhập thành công.", "success");
 
+                                    // Điều hướng dựa trên quyền hạn (Role)
                                     if (Session["Role"].ToString() == "Admin")
                                         Response.Redirect("~/Admin/Dashboard.aspx");
                                     else
@@ -82,19 +94,19 @@ namespace EventManagementWeb.Account
                                 }
                                 else
                                 {
-                                    lblError.Text = "Mật khẩu không đúng";
+                                    ErrorMessage = "Mật khẩu không đúng";
                                 }
                             }
                             else
                             {
-                                lblError.Text = "Email không tồn tại hoặc tài khoản bị khóa";
+                                ErrorMessage = "Email không tồn tại hoặc tài khoản bị khóa";
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    lblError.Text = "Lỗi kết nối cơ sở dữ liệu: " + ex.Message;
+                    ErrorMessage = "Lỗi hệ thống: " + ex.Message;
                 }
             }
         }
