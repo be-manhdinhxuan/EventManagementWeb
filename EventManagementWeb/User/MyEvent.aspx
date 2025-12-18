@@ -1,13 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Event.aspx.cs" Inherits="EventManagementWeb.User.Event" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyEvent.aspx.cs" Inherits="EventManagementWeb.User.MyEvent" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Sự kiện</title>
+    <title>Sự kiện của tôi</title>
     <link href="../Assets/css/style.css" rel="stylesheet" />
     <link href="../Assets/css/common-layout.css" rel="stylesheet" />
-    <link href="../Assets/css/pages/event.css" rel="stylesheet" />
+    <link href="../Assets/css/pages/my-event.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -32,7 +32,7 @@
                     </li>
 
                     <li class="sidebar__item">
-                        <a href="Event.aspx" class="sidebar__link sidebar__link--active">
+                        <a href="Event.aspx" class="sidebar__link ">
                             <svg
                                 width="32"
                                 height="32"
@@ -48,7 +48,7 @@
                     </li>
 
                     <li class="sidebar__item">
-                        <a href="MyEvent.aspx" class="sidebar__link">
+                        <a href="MyEvent.aspx" class="sidebar__link sidebar__link--active">
                             <svg
                                 width="32"
                                 height="32"
@@ -100,20 +100,20 @@
                 <div class="sidebar__logout">
                     <asp:LinkButton ID="lnkLogout" runat="server" CssClass="sidebar__link" OnClick="Logout_Click">
 
-                        <svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M21.3333 22.6667L28 16M28 16L21.3333 9.33333M28 16H12M12 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V6.66667C4 5.95942 4.28095 5.28115 4.78105 4.78105C5.28115 4.28095 5.95942 4 6.66667 4H12"
-                                stroke="currentColor"
-                                stroke-width="3"
-                                stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                        <span>Đăng xuất</span>
+            <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M21.3333 22.6667L28 16M28 16L21.3333 9.33333M28 16H12M12 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V6.66667C4 5.95942 4.28095 5.28115 4.78105 4.78105C5.28115 4.28095 5.95942 4 6.66667 4H12"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            <span>Đăng xuất</span>
                     </asp:LinkButton>
                 </div>
             </aside>
@@ -156,8 +156,60 @@
 
             <!-- Main -->
             <main class="main">
-                <h1 class="main__title">Sự kiện</h1>
+                <h1 class="main__title">Sự kiện của tôi</h1>
 
+
+                <!-- Event Tabs -->
+                <nav class="events-tabs" role="tablist" aria-label="Bộ lọc sự kiện">
+                    <ul class="events-tabs__list">
+
+                        <!-- UPCOMING -->
+                        <li id="liTabUpcoming" runat="server" class="events-tabs__item">
+                            <asp:LinkButton ID="btnTabUpcoming" runat="server"
+                                CssClass="events-tabs__button"
+                                OnClick="Tab_Click"
+                                CommandArgument="upcoming">
+                            <span>Sắp tới</span>
+                            </asp:LinkButton>
+
+                            <span class="events-tabs__badge">
+                                <asp:Literal ID="litCountUpcoming" runat="server" Text="0" />
+                            </span>
+                        </li>
+
+                        <!-- ATTENDED -->
+                        <li id="liTabAttended" runat="server" class="events-tabs__item">
+                            <asp:LinkButton ID="btnTabAttended" runat="server"
+                                CssClass="events-tabs__button"
+                                OnClick="Tab_Click"
+                                CommandArgument="attended">
+                            <span>Đã tham gia</span>
+                            </asp:LinkButton>
+
+                            <span class="events-tabs__badge">
+                                <asp:Literal ID="litCountAttended" runat="server" Text="0" />
+                            </span>
+                        </li>
+
+                        <!-- CANCELLED -->
+                        <li id="liTabCancelled" runat="server" class="events-tabs__item">
+                            <asp:LinkButton ID="btnTabCancelled" runat="server"
+                                CssClass="events-tabs__button"
+                                OnClick="Tab_Click"
+                                CommandArgument="cancelled">
+                            <span>Đã hủy</span>
+                            </asp:LinkButton>
+
+                            <span class="events-tabs__badge">
+                                <asp:Literal ID="litCountCancelled" runat="server" Text="0" />
+                            </span>
+                        </li>
+
+                    </ul>
+                </nav>
+
+
+                <!-- Event Filter -->
                 <section class="event-filter" aria-label="Bộ lọc sự kiện">
                     <div class="event-filter__search">
                         <label for="txtSearchEvent" class="event-filter__label">Tìm kiếm sự kiện</label>
@@ -235,10 +287,10 @@
                     </div>
 
                     <asp:LinkButton ID="btnResetFilter" runat="server" CssClass="event-filter__reset" OnClick="btnResetFilter_Click">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor" />
-            </svg>
-            <span>Đặt lại</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor" />
+                        </svg>
+                        <span>Đặt lại</span>
                     </asp:LinkButton>
                 </section>
 
@@ -271,28 +323,35 @@
                         </ItemTemplate>
                     </asp:Repeater>
 
-                    <asp:Panel ID="pnlNoEvents" runat="server" Visible="false" CssClass="no-events">
-                        <p>Không tìm thấy sự kiện nào.</p>
+                    <asp:Panel ID="pnlNoEvents" runat="server" CssClass="no-events no-events--hidden" ClientIDMode="Static">
+                        <div class="no-events__content">
+                            <svg class="no-events__icon" width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M60 80L52 88C51.0833 88.9167 49.9167 89.375 48.5 89.375C47.0833 89.375 45.9167 88.9167 45 88C44.0833 87.0833 43.625 85.9167 43.625 84.5C43.625 83.0833 44.0833 81.9167 45 81L53 73L45 65C44.0833 64.0833 43.625 62.9167 43.625 61.5C43.625 60.0833 44.0833 58.9167 45 58C45.9167 57.0833 47.0833 56.625 48.5 56.625C49.9167 56.625 51.0833 57.0833 52 58L60 66L68 58C68.9167 57.0833 70.0833 56.625 71.5 56.625C72.9167 56.625 74.0833 57.0833 75 58C75.9167 58.9167 76.375 60.0833 76.375 61.5C76.375 62.9167 75.9167 64.0833 75 65L67 73L75 81C75.9167 81.9167 76.375 83.0833 76.375 84.5C76.375 85.9167 75.9167 87.0833 75 88C74.0833 88.9167 72.9167 89.375 71.5 89.375C70.0833 89.375 68.9167 88.9167 68 88L60 80ZM25 108C22.25 108 19.8967 107.022 17.94 105.065C15.9833 103.108 15.0033 100.753 15 98V28C15 25.25 15.98 22.8967 17.94 20.94C19.9 18.9833 22.2533 18.0033 25 18H30V13C30 11.5834 30.48 10.3967 31.44 9.44002C32.4 8.48335 33.5867 8.00335 35 8.00002C36.4133 7.99668 37.6017 8.47668 38.565 9.44002C39.5283 10.4034 40.0067 11.59 40 13V18H80V13C80 11.5834 80.48 10.3967 81.44 9.44002C82.4 8.48335 83.5867 8.00335 85 8.00002C86.4133 7.99668 87.6017 8.47668 88.565 9.44002C89.5283 10.4034 90.0067 11.59 90 13V18H95C97.75 18 100.105 18.98 102.065 20.94C104.025 22.9 105.003 25.2533 105 28V98C105 100.75 104.022 103.105 102.065 105.065C100.108 107.025 97.7533 108.003 95 108H25ZM25 98H95V48H25V98ZM25 38H95V28H25V38Z" fill="#896161" />
+                            </svg>
+
+                            <h3 class="no-events__title">Không tìm thấy sự kiện nào</h3>
+                            <p class="no-events__desc">Không có sự kiện nào để hiển thị trong danh mục này.</p>
+                        </div>
                     </asp:Panel>
                 </section>
 
+                <!-- Pagination -->
                 <div class="pagination">
                     <asp:LinkButton ID="btnPrevPage" runat="server" CssClass="pagination__button" OnClick="btnPrevPage_Click" Enabled="false">
-             <svg class="pagination__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
+                         <svg class="pagination__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
                     </asp:LinkButton>
 
                     <asp:PlaceHolder ID="phPagination" runat="server" />
 
                     <asp:LinkButton ID="btnNextPage" runat="server" CssClass="pagination__button" OnClick="btnNextPage_Click">
-             <svg class="pagination__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
+                         <svg class="pagination__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
                     </asp:LinkButton>
                 </div>
             </main>
-
 
             <!-- Nav Mobile -->
             <nav class="nav">
@@ -306,7 +365,7 @@
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="Event.aspx" class="nav__link nav__link--active">
+                        <a href="Event.aspx" class="nav__link ">
                             <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M14.3611 18.6668C13.7 18.6668 13.1412 18.4385 12.6847 17.9821C12.2282 17.5256 12 16.9668 12 16.3057C12 15.6446 12.2282 15.0858 12.6847 14.6293C13.1412 14.1728 13.7 13.9446 14.3611 13.9446C15.0222 13.9446 15.581 14.1728 16.0375 14.6293C16.494 15.0858 16.7222 15.6446 16.7222 16.3057C16.7222 16.9668 16.494 17.5256 16.0375 17.9821C15.581 18.4385 15.0222 18.6668 14.3611 18.6668ZM5.38889 22.4446C4.86944 22.4446 4.42493 22.2598 4.05533 21.8902C3.68574 21.5206 3.50063 21.0757 3.5 20.5557V7.33345C3.5 6.814 3.68511 6.36948 4.05533 5.99989C4.42556 5.6303 4.87007 5.44519 5.38889 5.44456H6.33333V4.50011C6.33333 4.23252 6.424 4.00837 6.60533 3.82767C6.78667 3.64696 7.01081 3.5563 7.27778 3.55567C7.54474 3.55504 7.7692 3.6457 7.95117 3.82767C8.13313 4.00963 8.22348 4.23378 8.22222 4.50011V5.44456H15.7778V4.50011C15.7778 4.23252 15.8684 4.00837 16.0498 3.82767C16.2311 3.64696 16.4553 3.5563 16.7222 3.55567C16.9892 3.55504 17.2136 3.6457 17.3956 3.82767C17.5776 4.00963 17.6679 4.23378 17.6667 4.50011V5.44456H18.6111C19.1306 5.44456 19.5754 5.62967 19.9456 5.99989C20.3158 6.37011 20.5006 6.81463 20.5 7.33345V20.5557C20.5 21.0751 20.3152 21.5199 19.9456 21.8902C19.576 22.2604 19.1312 22.4452 18.6111 22.4446H5.38889ZM5.38889 20.5557H18.6111V11.1112H5.38889V20.5557ZM5.38889 9.22233H18.6111V7.33345H5.38889V9.22233Z" fill="currentColor" />
                             </svg>
@@ -314,7 +373,7 @@
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="MyEvent.aspx" class="nav__link">
+                        <a href="MyEvent.aspx" class="nav__link nav__link--active">
                             <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11.0083 18.715L7.65556 15.52L9.025 14.215L11.0083 16.105L14.975 12.325L16.3444 13.63L11.0083 18.715ZM5.38889 22C4.86944 22 4.42493 21.8239 4.05533 21.4717C3.68574 21.1195 3.50063 20.6956 3.5 20.2V7.6C3.5 7.105 3.68511 6.6814 4.05533 6.3292C4.42556 5.977 4.87007 5.8006 5.38889 5.8H6.33333V4H8.22222V5.8H15.7778V4H17.6667V5.8H18.6111C19.1306 5.8 19.5754 5.9764 19.9456 6.3292C20.3158 6.682 20.5006 7.1056 20.5 7.6V20.2C20.5 20.695 20.3152 21.1189 19.9456 21.4717C19.576 21.8245 19.1312 22.0006 18.6111 22H5.38889ZM5.38889 20.2H18.6111V11.2H5.38889V20.2ZM5.38889 9.4H18.6111V7.6H5.38889V9.4Z" fill="currentColor" />
                             </svg>
@@ -333,7 +392,6 @@
                 </ul>
             </nav>
         </div>
-
     </form>
 </body>
 </html>
