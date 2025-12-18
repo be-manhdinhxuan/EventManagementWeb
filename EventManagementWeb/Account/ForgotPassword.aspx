@@ -18,12 +18,23 @@
             <p class="desc">Nhập địa chỉ email được liên kết với tài khoản của bạn và chúng tôi sẽ gửi cho bạn liên kết để đặt lại mật khẩu.</p>
 
             <div class="form-group">
-                <label>Email</label>
-                <asp:TextBox ID="txtEmail" runat="server" placeholder="Nhập email của bạn" TextMode="Email" CssClass="form-control" ClientIDMode="Static"></asp:TextBox>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email"
+                    class="form-control" placeholder="Nhập email của bạn"
+                    value="<%= Request.Form["email"] %>" required />
             </div>
-            <asp:Label ID="lblMessage" runat="server" CssClass="mgs" Visible="false"></asp:Label>
 
-            <asp:Button ID="btnSend" runat="server" Text="Gửi liên kết đặt lại" CssClass="btn-send" OnClick="btnSend_Click" ClientIDMode="Static" />
+            <% if (!string.IsNullOrEmpty(Message))
+                { %>
+            <div class="mgs <%= MessageClass %>">
+                <%= Message %>
+            </div>
+            <% } %>
+
+            <button type="submit" name="btnAction" value="send_link" class="btn-send">
+                Gửi liên kết đặt lại
+           
+            </button>
 
             <div class="cta">
                 <a href="Login.aspx" class='cta-link'>Quay lại Đăng nhập
