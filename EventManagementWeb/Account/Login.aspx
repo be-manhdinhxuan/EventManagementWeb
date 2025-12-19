@@ -52,7 +52,7 @@
             </div>
         </div>
     </form>
-    <script>
+    <script type="text/javascript">
         function togglePasswordVisibility() {
             var passwordInput = document.getElementById('password');
             var toggleIcon = document.getElementById('toggleIcon');

@@ -159,7 +159,10 @@
     <Content Include="Assets\css\pages\home.css" />
     <Content Include="Assets\css\component\alerts.css" />
     <Content Include="Assets\css\pages\forgot_pass.css" />
+    <Content Include="Assets\css\pages\my-event.css" />
+    <Content Include="Assets\css\pages\notification.css" />
     <Content Include="Assets\css\pages\reset_pass.css" />
+    <Content Include="Assets\css\pages\setting-user.css" />
     <Content Include="Assets\css\style.css" />
     <Content Include="Assets\css\base\typography.css" />
     <Content Include="Assets\css\base\variables.css" />
@@ -205,11 +208,29 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Uploads\birthday-q3.jpg" />
+    <Content Include="Uploads\countdown-2026.jpg" />
+    <Content Include="Uploads\hackathon-2025.jpg" />
+    <Content Include="Uploads\hien-mau-2025.jpg" />
+    <Content Include="Uploads\hoi-nghi-cong-nghe-2025.jpg" />
+    <Content Include="Uploads\hoi-thao-devops.jpg" />
+    <Content Include="Uploads\onboarding-q4.jpg" />
+    <Content Include="Uploads\run-for-green.jpg" />
+    <Content Include="Uploads\seminar-ai.jpg" />
     <Content Include="Uploads\sk1.jpg" />
     <Content Include="Uploads\sk2.jpg" />
     <Content Include="Uploads\sk3.jpg" />
+    <Content Include="Uploads\team-building-dalat-2025.jpg" />
+    <Content Include="Uploads\team-building-vungtau.jpg" />
+    <Content Include="Uploads\tech-sharing-microservices.jpg" />
+    <Content Include="Uploads\training-security.jpg" />
+    <Content Include="Uploads\workshop-agile.jpg" />
+    <Content Include="Uploads\year-end-party-2025.jpg" />
     <Content Include="User\Event.aspx" />
     <Content Include="User\Home.aspx" />
+    <Content Include="User\MyEvent.aspx" />
+    <Content Include="User\Notification.aspx" />
+    <Content Include="User\Setting.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -262,6 +283,27 @@
     <Compile Include="User\Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="User\MyEvent.aspx.cs">
+      <DependentUpon>MyEvent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\MyEvent.aspx.designer.cs">
+      <DependentUpon>MyEvent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\Notification.aspx.cs">
+      <DependentUpon>Notification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Notification.aspx.designer.cs">
+      <DependentUpon>Notification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\Setting.aspx.cs">
+      <DependentUpon>Setting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Setting.aspx.designer.cs">
+      <DependentUpon>Setting.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -273,6 +315,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Uploads\avatars\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />

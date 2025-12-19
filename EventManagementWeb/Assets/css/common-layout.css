@@ -67,7 +67,7 @@ a {
 }
 
     .sidebar__link:hover {
-        background-color: #d8e6fd;
+        background-color: #d8e6fd !important;
         color: var(--primary-color);
     }
 

@@ -5,6 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Sự kiện của tôi</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../Assets/css/style.css" rel="stylesheet" />
     <link href="../Assets/css/common-layout.css" rel="stylesheet" />
     <link href="../Assets/css/pages/my-event.css" rel="stylesheet" />
@@ -298,8 +300,7 @@
                                 </div>
                             </div>
 
-                            <a href='EventDetail.aspx?id=<%= row["Id"] %>' class="btn event-card__button">
-                               Xem chi tiết
+                            <a href='EventDetail.aspx?id=<%= row["Id"] %>' class="btn event-card__button">Xem chi tiết
                             </a>
                         </div>
                     </div>

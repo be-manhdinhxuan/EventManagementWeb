@@ -1,0 +1,260 @@
+﻿/* Profile Section */
+.profile {
+    margin-top: 42px;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+}
+
+.profile__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-main);
+    border-bottom: 1px solid #E5E7EB;
+    padding: 16px 24px;
+}
+
+.profile__block-information {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding: 16px 24px;
+}
+
+.profile__avatar {
+    text-align: left;
+}
+
+.profile__avatar-label {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.profile__avatar-wrapper {
+    padding: 53px 16px;
+    background-color: var(--bg-white);
+    border: 1px dashed #D1D5DB;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.profile__avatar-edit {
+    position: relative;
+    display: inline-block;
+}
+
+.profile__avatar-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+.profile__avatar-note {
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #4B5563;
+    margin-top: 24px;
+}
+
+.profile__input-block {
+    flex: 1;
+    padding: 24px 0 0;
+}
+
+.profile__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile__label {
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+.profile__input {
+    padding: 15px;
+    border: 1px solid #DBDFE6;
+    border-radius: 8px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+    transition: border-color 0.3s;
+}
+
+.profile__actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+}
+
+.profile__button {
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .profile__button:hover {
+        background: #357ae8;
+    }
+
+/* Password Section */
+.password {
+    margin: 42px 0 90px;
+    background-color: var(--bg-white);
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+}
+
+.password__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-main);
+    border-bottom: 1px solid #E5E7EB;
+    padding: 16px 24px;
+}
+
+.password__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 24px;
+}
+
+.password__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.password__label {
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+.password__input-wrapper {
+    position: relative;
+}
+
+.password__input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #DBDFE6;
+    border-radius: 8px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+    transition: border-color 0.3s;
+}
+
+    .password__input:focus {
+        outline: none;
+        border-color: #4285f4;
+    }
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+.strength-text {
+    margin: 20px 0 8px;
+    text-align: left;
+}
+
+/* Thanh độ mạnh mật khẩu */
+.strength-meter {
+    height: 10px;
+    background: var(--border-color);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 9999px;
+    transition: all 0.4s;
+}
+
+.password__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.password__button {
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .password__button:hover {
+        background: #357ae8;
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main {
+        padding: 12px;
+    }
+
+    .profile__block-information {
+        justify-content: center;
+    }
+
+    .settings__header {
+        padding: 20px 16px 0;
+    }
+
+    .settings__title {
+        font-size: 20px;
+    }
+
+    .profile {
+        padding: 0 0 20px;
+    }
+
+
+    .profile__form,
+    .password__form {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings__title {
+        font-size: 18px;
+    }
+
+
+    .profile__avatar-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .profile__button,
+    .password__button {
+        width: 100%;
+    }
+}
