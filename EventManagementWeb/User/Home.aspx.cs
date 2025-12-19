@@ -27,6 +27,7 @@ namespace EventManagementWeb.User
             if (Request.HttpMethod == "POST" && Request.Form["btnAction"] == "logout")
             {
                 HandleLogout();
+                return;
             }
 
             if (!IsPostBack)

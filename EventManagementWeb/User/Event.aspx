@@ -97,9 +97,9 @@
                         </a>
                     </li>
                 </ul>
+
                 <div class="sidebar__logout">
-                    <button type="submit" name="btnAction" value="logout" class="sidebar__link" style="background: none; border: none; width: 100%; cursor: pointer;"
-                        onclick="return confirm('Bạn có chắc muốn đăng xuất không?');">
+                    <button type="button" class="sidebar__link" onclick="openLogoutModal()" style="background: none; border: none; width: 100%; cursor: pointer;">
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21.3333 22.6667L28 16M28 16L21.3333 9.33333M28 16H12M12 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V6.66667C4 5.95942 4.28095 5.28115 4.78105 4.78105C5.28115 4.28095 5.95942 4 6.66667 4H12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
@@ -107,6 +107,23 @@
                     </button>
                 </div>
             </aside>
+
+            <!-- Modal Overlay -->
+            <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)" style="display: none;">
+                <div class="modal">
+                    <div class="icon-wrapper">
+                        <svg class="alert-icon" width="33" height="29" viewBox="0 0 33 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 28.5L16.5 0L33 28.5H0ZM16.5 24C16.925 24 17.2815 23.856 17.5695 23.568C17.8575 23.28 18.001 22.924 18 22.5C17.999 22.076 17.855 21.72 17.568 21.432C17.281 21.144 16.925 21 16.5 21C16.075 21 15.719 21.144 15.432 21.432C15.145 21.72 15.001 22.076 15 22.5C14.999 22.924 15.143 23.2805 15.432 23.5695C15.721 23.8585 16.077 24.002 16.5 24ZM15 19.5H18V12H15V19.5Z" fill="#EC1313" />
+                        </svg>
+                    </div>
+                    <h2>Xác nhận đăng xuất</h2>
+                    <p>Bạn có chắc chắn muốn đăng xuất khỏi tài khoản không? Phiên làm việc của bạn sẽ kết thúc.</p>
+                    <div class="button-group">
+                        <button type="button" class="btn-modal btn-cancel" onclick="closeLogoutModal()">Hủy bỏ</button>
+                        <button type="button" class="btn-modal btn-confirm" onclick="confirmAction()">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
 
             <!-- Header -->
             <header class="header">
@@ -311,7 +328,41 @@
                 </ul>
             </nav>
         </div>
-
     </form>
+    <script type="text/javascript">
+        // 1. Hàm mở Modal
+        function openLogoutModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.style.display = 'flex';
+        }
+
+        // 2. Hàm đóng Modal
+        function closeLogoutModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.style.display = 'none';
+        }
+
+        // 3. Hàm XÁC NHẬN ĐĂNG XUẤT 
+        function confirmAction() {
+            // Tạo một input ẩn tạm thời để gửi giá trị btnAction=logout lên Server
+            const form = document.getElementById('form1');
+            const old = form.querySelector('input[name="btnAction"]');
+            if (old) old.remove();
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'btnAction';
+            hiddenField.value = 'logout';
+
+            form.appendChild(hiddenField);
+            form.submit(); // Gửi form đi
+        }
+
+        // 4. Đóng khi click ra ngoài vùng trắng
+        function closeModalOnOverlay(event) {
+            if (event.target.id === 'modalOverlay') {
+                closeLogoutModal();
+            }
+        }
+    </script>
 </body>
 </html>

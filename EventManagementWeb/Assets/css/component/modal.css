@@ -1,2 +1,116 @@
-﻿body {
+﻿* {
+    font-family: 'Inter', sans-serif !important;
 }
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+    .modal-overlay.active {
+        display: flex;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: #fee2e2;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 24px;
+}
+
+.modal h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-main);
+}
+
+.modal p {
+    margin-top: 16px;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 32px;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-modal {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 104px;
+}
+
+.btn-cancel {
+    background: #f3f4f6;
+    color: var(--text-color);
+}
+
+    .btn-cancel:hover {
+        background: #edf2f7;
+    }
+
+.btn-confirm {
+    background: #e53e3e;
+    color: white;
+}
+
+    .btn-confirm:hover {
+        background: #c53030;
+    }

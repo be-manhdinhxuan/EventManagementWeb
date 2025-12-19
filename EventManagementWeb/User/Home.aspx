@@ -24,12 +24,12 @@
                 iconSvg = `<svg class="alert-icon" width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M13.3333 0C5.98533 0 0 5.98533 0 13.3333C0 20.6813 5.98533 26.6667 13.3333 26.6667C20.6813 26.6667 26.6667 20.6813 26.6667 13.3333C26.6667 5.98533 20.6813 0 13.3333 0ZM13.3333 2.66667C19.2402 2.66667 24 7.4265 24 13.3333C24 19.2402 19.2402 24 13.3333 24C7.4265 24 2.66667 19.2402 2.66667 13.3333C2.66667 7.4265 7.4265 2.66667 13.3333 2.66667ZM19.0573 8.39062L10.6667 16.7812L7.60937 13.724L5.72396 15.6094L10.6667 20.5521L20.9427 10.276L19.0573 8.39062Z" fill="currentColor"/></svg>`;
             } else if (type === 'error') {
                 iconSvg = `<svg class="alert-icon" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.7 16.9H14.3V19.5H11.7V16.9ZM11.7 6.5H14.3V14.3H11.7V6.5ZM12.987 0C5.811 0 0 5.824 0 13C0 20.176 5.811 26 12.987 26C20.176 26 26 20.176 26 13C26 5.824 20.176 0 12.987 0ZM13 23.4C7.254 23.4 2.6 18.746 2.6 13C2.6 7.254 7.254 2.6 13 2.6C18.746 2.6 23.4 7.254 23.4 13C23.4 18.746 18.746 23.4 13 23.4Z" fill="currentColor"/>
-        </svg>`;
+                        <path d="M11.7 16.9H14.3V19.5H11.7V16.9ZM11.7 6.5H14.3V14.3H11.7V6.5ZM12.987 0C5.811 0 0 5.824 0 13C0 20.176 5.811 26 12.987 26C20.176 26 26 20.176 26 13C26 5.824 20.176 0 12.987 0ZM13 23.4C7.254 23.4 2.6 18.746 2.6 13C2.6 7.254 7.254 2.6 13 2.6C18.746 2.6 23.4 7.254 23.4 13C23.4 18.746 18.746 23.4 13 23.4Z" fill="currentColor"/>
+                        </svg>`;
             } else if (type === 'warning') {
                 iconSvg = `<svg class="alert-icon" width="30" height="26" viewBox="0 0 30 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 26L15 0L30 26H0ZM13.6364 17.7895H16.3636V10.9474H13.6364V17.7895ZM15 21.8947C15.3864 21.8947 15.7105 21.7634 15.9723 21.5006C16.2332 21.2388 16.3636 20.914 16.3636 20.5263C16.3636 20.1386 16.2332 19.8138 15.9723 19.552C15.7105 19.2893 15.3864 19.1579 15 19.1579C14.6136 19.1579 14.29 19.2893 14.0291 19.552C13.7673 19.8138 13.6364 20.1386 13.6364 20.5263C13.6364 20.914 13.7673 21.2388 14.0291 21.5006C14.29 21.7634 14.6136 21.8947 15 21.8947ZM4.70455 23.2632H25.2955L15 5.47368L4.70455 23.2632Z" fill="currentColor"/>
-        </svg>`;
+                        <path d="M0 26L15 0L30 26H0ZM13.6364 17.7895H16.3636V10.9474H13.6364V17.7895ZM15 21.8947C15.3864 21.8947 15.7105 21.7634 15.9723 21.5006C16.2332 21.2388 16.3636 20.914 16.3636 20.5263C16.3636 20.1386 16.2332 19.8138 15.9723 19.552C15.7105 19.2893 15.3864 19.1579 15 19.1579C14.6136 19.1579 14.29 19.2893 14.0291 19.552C13.7673 19.8138 13.6364 20.1386 13.6364 20.5263C13.6364 20.914 13.7673 21.2388 14.0291 21.5006C14.29 21.7634 14.6136 21.8947 15 21.8947ZM4.70455 23.2632H25.2955L15 5.47368L4.70455 23.2632Z" fill="currentColor"/>
+                        </svg>`;
             }
 
             const html = `
@@ -60,6 +60,40 @@
                     }, 500);
                 }
             }, 5000);
+        }
+
+        // 1. Hàm mở Modal
+        function openLogoutModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.style.display = 'flex';
+        }
+
+        // 2. Hàm đóng Modal
+        function closeLogoutModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.style.display = 'none';
+        }
+
+        // 3. Hàm XÁC NHẬN ĐĂNG XUẤT 
+        function confirmAction() {
+            // Tạo một input ẩn tạm thời để gửi giá trị btnAction=logout lên Server
+            const form = document.getElementById('form1');
+            const old = form.querySelector('input[name="btnAction"]');
+            if (old) old.remove();
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'btnAction';
+            hiddenField.value = 'logout';
+
+            form.appendChild(hiddenField);
+            form.submit(); // Gửi form đi
+        }
+
+        // 4. Đóng khi click ra ngoài vùng trắng
+        function closeModalOnOverlay(event) {
+            if (event.target.id === 'modalOverlay') {
+                closeLogoutModal();
+            }
         }
     </script>
 </head>
@@ -153,8 +187,9 @@
                         </a>
                     </li>
                 </ul>
+
                 <div class="sidebar__logout">
-                    <button type="submit" name="btnAction" value="logout" class="sidebar__link" style="background: none; border: none; width: 100%; cursor: pointer;">
+                    <button type="button" class="sidebar__link" onclick="openLogoutModal()" style="background: none; border: none; width: 100%; cursor: pointer;">
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21.3333 22.6667L28 16M28 16L21.3333 9.33333M28 16H12M12 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V6.66667C4 5.95942 4.28095 5.28115 4.78105 4.78105C5.28115 4.28095 5.95942 4 6.66667 4H12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
@@ -162,6 +197,23 @@
                     </button>
                 </div>
             </aside>
+
+            <!-- Modal Overlay -->
+            <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)" style="display: none;">
+                <div class="modal">
+                    <div class="icon-wrapper">
+                        <svg class="alert-icon" width="33" height="29" viewBox="0 0 33 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 28.5L16.5 0L33 28.5H0ZM16.5 24C16.925 24 17.2815 23.856 17.5695 23.568C17.8575 23.28 18.001 22.924 18 22.5C17.999 22.076 17.855 21.72 17.568 21.432C17.281 21.144 16.925 21 16.5 21C16.075 21 15.719 21.144 15.432 21.432C15.145 21.72 15.001 22.076 15 22.5C14.999 22.924 15.143 23.2805 15.432 23.5695C15.721 23.8585 16.077 24.002 16.5 24ZM15 19.5H18V12H15V19.5Z" fill="#EC1313" />
+                        </svg>
+                    </div>
+                    <h2>Xác nhận đăng xuất</h2>
+                    <p>Bạn có chắc chắn muốn đăng xuất khỏi tài khoản không? Phiên làm việc của bạn sẽ kết thúc.</p>
+                    <div class="button-group">
+                        <button type="button" class="btn-modal btn-cancel" onclick="closeLogoutModal()">Hủy bỏ</button>
+                        <button type="button" class="btn-modal btn-confirm" onclick="confirmAction()">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
 
             <!-- Header -->
             <header class="header">
@@ -216,7 +268,7 @@
                 <!-- Events Section -->
                 <section class="events">
                     <h2 class="events__title">Sự kiện sắp tới</h2>
-                    <div class="events__grid">
+                    <section class="events__grid">
                         <% if (UpcomingEvents != null && UpcomingEvents.Rows.Count > 0)
                             {
                                 foreach (System.Data.DataRow row in UpcomingEvents.Rows)
@@ -252,14 +304,14 @@
                             </div>
                         </article>
                         <%      }
-                        }
-                        else
-                        { %>
+                            }
+                            else
+                            { %>
                         <div class="no-events">
                             <p>Hiện tại chưa có sự kiện nào sắp diễn ra.</p>
                         </div>
                         <% } %>
-                    </div>
+                    </section>
 
                     <div class="load-more">
                         <a href="Event.aspx" class="load-more__button btn">Xem tất cả sự kiện</a>
