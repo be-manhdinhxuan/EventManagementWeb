@@ -3,376 +3,245 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventManagementWeb.User
 {
-    public partial class Event : System.Web.UI.Page
+    public partial class Event : Page
     {
-        // Khai báo biến PageIndex và PageSize để quản lý phân trang
-        private int CurrentPageIndex
-        {
-            get { return ViewState["CurrentPageIndex"] != null ? (int)ViewState["CurrentPageIndex"] : 0; }
-            set { ViewState["CurrentPageIndex"] = value; }
-        }
+        // Các biến public để .aspx truy cập
+        public DataTable EventList;
+        public List<string> Locations = new List<string>();
+        public string SearchTerm = "";
+        public string SelectedTime = "ALL";
+        public string SelectedLocation = "ALL";
+        public string SelectedStatus = "ALL";
+        public int CurrentPage = 1;
+        public int TotalPages = 1;
         private const int PageSize = 8;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            // Kiểm tra đăng nhập
+            if (Session["UserId"] == null)
             {
-                // 1. Tải danh sách Địa điểm vào ddlFilterLocation
-                LoadLocations();
-            }
-                // 2. Tải danh sách sự kiện lần đầu
-                LoadEventData();
-        }
-
-        // Lấy ảnh sự kiện, nếu không có thì trả về ảnh mặc định
-        public string GetEventImage(object imageUrlObj)
-        {
-            string imageUrl = imageUrlObj?.ToString() ?? "";
-
-            if (string.IsNullOrEmpty(imageUrl))
-            {
-                return "../Assets/images/default-event.jpg";
-            }
-
-            // Kiểm tra file có tồn tại không 
-            string physicalPath = Server.MapPath("~/Uploads/" + imageUrl);
-            if (System.IO.File.Exists(physicalPath))
-            {
-                return "../Uploads/" + imageUrl;
-            }
-
-            // Nếu file không tồn tại → dùng default
-            return "../Assets/images/default-event.jpg";
-        }
-
-        // Trả về class CSS cho badge
-        public string GetEventStatusClass(object statusObj, object startTimeObj, object endTimeObj, object currentReg, object maxCapacity, object deadlineObj)
-        {
-            string status = statusObj?.ToString() ?? "Draft";
-            if (status == "Draft") return "badge--hidden"; // Ẩn hoàn toàn
-
-            DateTime start = startTimeObj != DBNull.Value ? Convert.ToDateTime(startTimeObj) : DateTime.MaxValue;
-            DateTime end = endTimeObj != DBNull.Value ? Convert.ToDateTime(endTimeObj) : DateTime.MaxValue;
-            DateTime deadline = deadlineObj != DBNull.Value ? Convert.ToDateTime(deadlineObj) : DateTime.MaxValue;
-            int current = currentReg != DBNull.Value ? Convert.ToInt32(currentReg) : 0;
-            int max = maxCapacity != DBNull.Value ? Convert.ToInt32(maxCapacity) : 1;
-            DateTime now = DateTime.Now;
-
-            if (status == "Cancelled") return "badge--danger";
-            if (status == "Completed" || end < now) return "badge--secondary";
-            if (start <= now && now <= end) return "badge--info";
-            if (current >= max) return "badge--warning";
-            if (deadline < now || (start > now && deadline >= now == false)) return "badge--primary"; // Sắp diễn ra
-            return "badge--success"; // Đang mở đăng ký
-        }
-
-        // Trả về text hiển thị trong badge
-        public string GetEventStatusText(object statusObj, object startTimeObj, object endTimeObj, object currentReg, object maxCapacity, object deadlineObj)
-        {
-            string status = statusObj?.ToString() ?? "Draft";
-            if (status == "Draft") return "";
-
-            DateTime start = startTimeObj != DBNull.Value ? Convert.ToDateTime(startTimeObj) : DateTime.MaxValue;
-            DateTime end = endTimeObj != DBNull.Value ? Convert.ToDateTime(endTimeObj) : DateTime.MaxValue;
-            DateTime deadline = deadlineObj != DBNull.Value ? Convert.ToDateTime(deadlineObj) : DateTime.MaxValue;
-            int current = currentReg != DBNull.Value ? Convert.ToInt32(currentReg) : 0;
-            int max = maxCapacity != DBNull.Value ? Convert.ToInt32(maxCapacity) : 1;
-            DateTime now = DateTime.Now;
-
-            if (status == "Cancelled") return "Đã hủy";
-            if (status == "Completed" || end < now) return "Đã kết thúc";
-            if (start <= now && now <= end) return "Đang diễn ra";
-            if (current >= max) return "Đã đầy";
-            if (deadline < now || start <= now) return "Sắp diễn ra";
-            return "Đang mở đăng ký";
-        }
-
-        // Phương thức chung để tải và bind dữ liệu sự kiện
-        private void LoadEventData()
-        {
-            string connStr = ConfigurationManager.ConnectionStrings["EventManagementDB"].ConnectionString;
-
-            // Xây dựng điều kiện lọc
-            string filterCondition = BuildFilterCondition();
-
-            // Tính toán OFFSET và LIMIT cho phân trang
-            int offset = CurrentPageIndex * PageSize;
-
-            string sql = $@"
-            SELECT SQL_CALC_FOUND_ROWS 
-            Id, Title, StartTime, Location, ImageUrl,
-            Status, EndTime, CurrentRegistrations, MaxCapacity, RegistrationDeadline -- BỔ SUNG CÁC CỘT NÀY
-            FROM Events 
-            WHERE IsDeleted = 0 {filterCondition}
-            ORDER BY StartTime DESC
-            LIMIT {PageSize} OFFSET {offset};
-        
-            SELECT FOUND_ROWS() AS TotalRecords;"; // Lấy tổng số bản ghi trước khi LIMIT/OFFSET
-
-            using (MySqlConnection conn = new MySqlConnection(connStr))
-            {
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(sql, conn))
-                {
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds);
-
-                    if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                    {
-                        rptEventList.DataSource = ds.Tables[0];
-                        rptEventList.DataBind();
-                        pnlNoEvents.Visible = false;
-
-                        // Xử lý phân trang
-                        int totalRecords = Convert.ToInt32(ds.Tables[1].Rows[0]["TotalRecords"]);
-                        SetupPagination(totalRecords);
-                    }
-                    else
-                    {
-                        rptEventList.DataSource = null;
-                        rptEventList.DataBind();
-                        pnlNoEvents.Visible = true;
-                        SetupPagination(0);
-                    }
-                }
-            }
-        }
-
-        // Xây dựng chuỗi WHERE dựa trên các bộ lọc
-        private string BuildFilterCondition()
-        {
-            // MẶC ĐỊNH: Chỉ hiển thị sự kiện đã Published
-            string condition = " AND Status = 'Published'";
-
-            // 1. Tìm kiếm theo tên
-            string searchTerm = txtSearchEvent.Text.Trim();
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                condition += $" AND Title LIKE '%{MySqlHelper.EscapeString(searchTerm)}%'";
-            }
-
-            // 2. Lọc theo Thời gian
-            string timeValue = ddlFilterTime.SelectedValue;
-            if (timeValue != "ALL")
-            {
-                switch (timeValue)
-                {
-                    case "PAST":
-                        condition += " AND EndTime < NOW()";
-                        break;
-                    case "TODAY":
-                        condition += " AND DATE(StartTime) = CURDATE()";
-                        break;
-                    case "THIS_MONTH":
-                        condition += " AND YEAR(StartTime) = YEAR(NOW()) AND MONTH(StartTime) = MONTH(NOW())";
-                        break;
-                    default: // UPCOMING hoặc ALL nhưng không PAST
-                        condition += " AND StartTime > NOW()";
-                        break;
-                }
-            }
-
-            // 3. Lọc theo Địa điểm
-            string locationValue = ddlFilterLocation.SelectedValue;
-            if (locationValue != "ALL" && !string.IsNullOrEmpty(locationValue))
-            {
-                condition += $" AND Location = '{MySqlHelper.EscapeString(locationValue)}'";
-            }
-
-            // 4. Lọc theo Trạng thái mở rộng
-            string statusValue = ddlFilterStatus.SelectedValue;
-            if (statusValue != "ALL")
-            {
-                switch (statusValue)
-                {
-                    case "OPEN":
-                        condition += " AND StartTime > NOW() AND CurrentRegistrations < MaxCapacity AND (RegistrationDeadline IS NULL OR RegistrationDeadline >= NOW())";
-                        break;
-                    case "FULL":
-                        condition += " AND StartTime > NOW() AND CurrentRegistrations >= MaxCapacity";
-                        break;
-                    case "UPCOMING":
-                        condition += " AND StartTime > NOW()";
-                        break;
-                    case "PAST":
-                        condition = condition.Replace("Status = 'Published'", "Status IN ('Published', 'Completed')"); // Cho phép xem Completed
-                        condition += " AND EndTime < NOW()";
-                        break;
-                }
-            }
-
-            return condition;
-        }
-
-        // Phương thức tải các tùy chọn địa điểm
-        private void LoadLocations()
-        {
-            string connStr = ConfigurationManager.ConnectionStrings["EventManagementDB"].ConnectionString;
-
-            // SQL lấy các địa điểm duy nhất, không rỗng và chưa bị xóa
-            string sql = "SELECT DISTINCT Location FROM Events WHERE Location IS NOT NULL AND Location != '' AND IsDeleted = 0 ORDER BY Location ASC";
-
-            using (MySqlConnection conn = new MySqlConnection(connStr))
-            {
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    conn.Open();
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        // Xóa các mục cũ (nếu có)
-                        ddlFilterLocation.Items.Clear();
-
-                        // Thêm mục mặc định đầu tiên
-                        ddlFilterLocation.Items.Add(new ListItem("Tất cả", "ALL"));
-
-                        while (reader.Read())
-                        {
-                            string loc = reader["Location"].ToString();
-                            // Thêm địa điểm từ DB vào DropDownList
-                            ddlFilterLocation.Items.Add(new ListItem(loc, loc));
-                        }
-                    }
-                }
-            }
-        }
-
-        // --- Xử lý sự kiện ---
-
-        // Xử lý khi giá trị DropDownList thay đổi (AutoPostBack)
-        protected void ddlFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CurrentPageIndex = 0; // Đặt lại về trang 1
-            LoadEventData();
-        }
-
-        // Xử lý khi nội dung ô tìm kiếm thay đổi (AutoPostBack)
-        protected void txtSearchEvent_TextChanged(object sender, EventArgs e)
-        {
-            CurrentPageIndex = 0; // Đặt lại về trang 1
-            LoadEventData();
-        }
-
-        // Xử lý nút Đặt lại bộ lọc
-        protected void btnResetFilter_Click(object sender, EventArgs e)
-        {
-            txtSearchEvent.Text = string.Empty;
-            ddlFilterTime.SelectedValue = "ALL";
-            ddlFilterLocation.SelectedValue = "ALL";
-            ddlFilterStatus.SelectedValue = "ALL";
-            CurrentPageIndex = 0;
-            LoadEventData();
-        }
-
-        // Xử lý chuyển trang tiếp theo
-        protected void btnNextPage_Click(object sender, EventArgs e)
-        {
-            CurrentPageIndex++;
-            LoadEventData();
-        }
-
-        // Xử lý chuyển trang trước
-        protected void btnPrevPage_Click(object sender, EventArgs e)
-        {
-            if (CurrentPageIndex > 0)
-            {
-                CurrentPageIndex--;
-                LoadEventData();
-            }
-        }
-
-        // --- Xử lý Phân trang (Pagination) ---
-
-        private void SetupPagination(int totalRecords)
-        {
-            int totalPages = (int)Math.Ceiling((double)totalRecords / PageSize);
-
-            // Nếu chỉ có 1 trang hoặc không có dữ liệu, ẩn phân trang (tùy chọn)
-            if (totalPages <= 1)
-            {
-                phPagination.Visible = false;
-                btnPrevPage.Visible = false;
-                btnNextPage.Visible = false;
+                Response.Redirect("~/Account/Login.aspx");
                 return;
             }
 
-            phPagination.Visible = true;
-            btnPrevPage.Visible = true;
-            btnNextPage.Visible = true;
-
-            // Xóa các nút cũ trước khi tạo mới
-            phPagination.Controls.Clear();
-
-            
-            // Đảm bảo luôn hiển thị 5 nút xung quanh trang hiện tại
-            int maxButtons = 5;
-            int startPage = CurrentPageIndex + 1 - 2;
-            int endPage = CurrentPageIndex + 1 + 2;
-
-            if (startPage <= 0)
+            // 1. Thu thập dữ liệu từ request
+            if (Request.HttpMethod == "POST")
             {
-                endPage -= (startPage - 1);
-                startPage = 1;
-            }
+                SearchTerm = Request.Form["txtSearch"]?.Trim() ?? "";
+                SelectedTime = Request.Form["ddlTime"] ?? "ALL";
+                SelectedLocation = Request.Form["ddlLocation"] ?? "ALL";
+                SelectedStatus = Request.Form["ddlStatus"] ?? "ALL";
 
-            if (endPage > totalPages)
-            {
-                endPage = totalPages;
-                if (endPage - maxButtons + 1 > 0)
+                // Phân trang
+                if (!string.IsNullOrEmpty(Request.Form["pageAction"]))
                 {
-                    startPage = endPage - maxButtons + 1;
-                }
-                else
-                {
-                    startPage = 1;
+                    int.TryParse(Request.Form["pageAction"], out CurrentPage);
                 }
             }
-
-            for (int i = startPage; i <= endPage; i++)
+            else
             {
-                LinkButton pageButton = new LinkButton();
-                pageButton.ID = "page_" + i;
-                pageButton.Text = i.ToString();
-                pageButton.CommandArgument = (i - 1).ToString();
-                pageButton.Click += new EventHandler(PageButton_Click);
-
-                // CSS chuẩn BEM
-                string activeClass = (i - 1 == CurrentPageIndex) ? " pagination__button--active" : "";
-                pageButton.CssClass = "pagination__button" + activeClass;
-
-                phPagination.Controls.Add(pageButton);
+                // Lần đầu vào trang (GET)
+                CurrentPage = 1;
             }
 
-            // Cập nhật trạng thái nút điều hướng
-            btnPrevPage.Enabled = CurrentPageIndex > 0;
-            btnNextPage.Enabled = CurrentPageIndex < totalPages - 1;
+            // 2. Xử lý hành động nút
+            string action = Request.Form["btnAction"];
+            if (!string.IsNullOrEmpty(action))
+            {
+                if (action == "logout")
+                {
+                    HandleLogout();
+                    return;
+                }
+                else if (action == "reset")
+                {
+                    SearchTerm = "";
+                    SelectedTime = "ALL";
+                    SelectedLocation = "ALL";
+                    SelectedStatus = "ALL";
+                    CurrentPage = 1;
+                }
+            }
 
-            // Thêm class 'disabled' cho CSS nếu nút bị vô hiệu hóa
-            btnPrevPage.CssClass = "pagination__button" + (CurrentPageIndex == 0 ? " pagination__button--disabled" : "");
-            btnNextPage.CssClass = "pagination__button" + (CurrentPageIndex >= totalPages - 1 ? " pagination__button--disabled" : "");
-        }
-
-        // Xử lý khi nhấn vào nút trang cụ thể
-        protected void PageButton_Click(object sender, EventArgs e)
-        {
-            LinkButton btn = (LinkButton)sender;
-            CurrentPageIndex = Convert.ToInt32(btn.CommandArgument);
+            // 3. Load dữ liệu
+            LoadLocations();
             LoadEventData();
         }
 
-        protected void Logout_Click(object sender, EventArgs e)
+        private void LoadEventData()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["EventManagementDB"].ConnectionString;
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            {
+                // Xây dựng filter cơ bản
+                string filter = " WHERE e.IsDeleted = 0 AND e.Status = 'Published' ";
+
+                // Tìm kiếm
+                if (!string.IsNullOrEmpty(SearchTerm))
+                    filter += " AND e.Title LIKE @search ";
+
+                // Địa điểm
+                if (SelectedLocation != "ALL")
+                    filter += " AND e.Location = @loc ";
+
+                // Lọc thời gian
+                if (SelectedTime == "TODAY")
+                    filter += " AND DATE(e.StartTime) = CURDATE() ";
+                else if (SelectedTime == "PAST")
+                    filter += " AND e.EndTime < NOW() ";
+                else if (SelectedTime == "THIS_MONTH")
+                    filter += " AND YEAR(e.StartTime) = YEAR(NOW()) AND MONTH(e.StartTime) = MONTH(NOW()) ";
+                else if (SelectedTime == "UPCOMING")
+                    filter += " AND e.StartTime > NOW() ";
+
+                // Lọc trạng thái - CHỈ 4 GIÁ TRỊ
+                string statusFilter = "";
+                if (SelectedStatus == "OPEN")
+                {
+                    // Đang mở: StartTime > NOW() và deadline >= NOW() (hoặc NULL)
+                    statusFilter = " AND e.StartTime > NOW() " +
+                                   " AND (e.RegistrationDeadline IS NULL OR e.RegistrationDeadline >= NOW()) ";
+                }
+                else if (SelectedStatus == "UPCOMING")
+                {
+                    // Sắp diễn ra: StartTime > NOW() nhưng deadline < NOW()
+                    statusFilter = " AND e.StartTime > NOW() " +
+                                   " AND e.RegistrationDeadline IS NOT NULL " +
+                                   " AND e.RegistrationDeadline < NOW() ";
+                }
+                else if (SelectedStatus == "PAST")
+                {
+                    // Đã kết thúc: EndTime < NOW()
+                    statusFilter = " AND e.EndTime < NOW() ";
+                }
+                // "ALL" → không thêm filter trạng thái
+
+                filter += statusFilter;
+
+                conn.Open();
+
+                // Đếm tổng số bản ghi
+                string countSql = "SELECT COUNT(*) FROM Events e " + filter;
+                using (MySqlCommand countCmd = new MySqlCommand(countSql, conn))
+                {
+                    AddSqlParameters(countCmd);
+                    int totalRecords = Convert.ToInt32(countCmd.ExecuteScalar());
+                    TotalPages = (int)Math.Ceiling((double)totalRecords / PageSize);
+                    if (TotalPages == 0) TotalPages = 1;
+                }
+
+                // Lấy dữ liệu trang hiện tại
+                string sql = $@"SELECT e.* FROM Events e {filter}
+                                ORDER BY e.StartTime DESC
+                                LIMIT @limit OFFSET @offset";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    AddSqlParameters(cmd);
+                    cmd.Parameters.AddWithValue("@limit", PageSize);
+                    cmd.Parameters.AddWithValue("@offset", (CurrentPage - 1) * PageSize);
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    {
+                        EventList = new DataTable();
+                        adapter.Fill(EventList);
+                    }
+                }
+            }
+        }
+
+        private void AddSqlParameters(MySqlCommand cmd)
+        {
+            if (cmd.CommandText.Contains("@search"))
+                cmd.Parameters.AddWithValue("@search", "%" + SearchTerm + "%");
+            if (cmd.CommandText.Contains("@loc"))
+                cmd.Parameters.AddWithValue("@loc", SelectedLocation);
+        }
+
+        private void LoadLocations()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["EventManagementDB"].ConnectionString;
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            {
+                string sql = "SELECT DISTINCT Location FROM Events WHERE IsDeleted = 0 AND Location IS NOT NULL AND Location != '' ORDER BY Location ASC";
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                using (MySqlDataReader r = cmd.ExecuteReader())
+                {
+                    Locations.Clear();
+                    while (r.Read())
+                    {
+                        Locations.Add(r["Location"].ToString());
+                    }
+                }
+            }
+        }
+
+        // Hiển thị ảnh
+        public string GetEventImage(object url) =>
+            string.IsNullOrEmpty(url?.ToString()) ? "../Assets/images/default-event.jpg" : "../Uploads/" + url;
+
+        
+        public string GetEventStatusClass(DataRow row)
+        {
+            DateTime start = Convert.ToDateTime(row["StartTime"]);
+            DateTime end = Convert.ToDateTime(row["EndTime"]);
+            DateTime? deadline = row["RegistrationDeadline"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["RegistrationDeadline"]);
+            DateTime now = DateTime.Now;
+
+            if (end < now)
+                return "badge--secondary"; // Đã kết thúc
+
+            if (start > now)
+            {
+                if (deadline == null || deadline >= now)
+                    return "badge--success"; // Đang mở đăng ký
+                else
+                    return "badge--primary"; // Sắp diễn ra
+            }
+
+            if (start <= now && now <= end)
+                return "badge--info"; // Đang diễn ra
+
+            return "badge--success";
+        }
+
+        public string GetEventStatusText(DataRow row)
+        {
+            DateTime start = Convert.ToDateTime(row["StartTime"]);
+            DateTime end = Convert.ToDateTime(row["EndTime"]);
+            DateTime? deadline = row["RegistrationDeadline"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["RegistrationDeadline"]);
+            DateTime now = DateTime.Now;
+
+            if (end < now)
+                return "Đã kết thúc";
+
+            if (start > now)
+            {
+                if (deadline == null || deadline >= now)
+                    return "Đang mở đăng ký";
+                else
+                    return "Sắp diễn ra";
+            }
+
+            if (start <= now && now <= end)
+                return "Đang diễn ra";
+
+            return "Đang mở đăng ký";
+        }
+
+        private void HandleLogout()
         {
             Session.Clear();
             Session.Abandon();
-
             FormsAuthentication.SignOut();
-
             Response.Redirect("~/Account/Login.aspx");
         }
     }
