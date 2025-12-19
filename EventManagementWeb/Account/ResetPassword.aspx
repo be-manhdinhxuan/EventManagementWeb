@@ -21,11 +21,9 @@
             <div class="form-group">
                 <label>Mật khẩu mới</label>
                 <div class="password-wrapper">
-                    <asp:TextBox ID="txtNewPass" runat="server"
-                        TextMode="Password"
-                        placeholder="Nhập mật khẩu mới"
-                        CssClass="password-input"
-                        onkeyup="checkPasswordStrength()" />
+                    <input type="password" name="newPassword" id="newPassword" 
+                           class="password-input" placeholder="Nhập mật khẩu mới" 
+                           onkeyup="checkPasswordStrength()" required />
                     <img src="../Assets/images/icon/eye-close.svg"
                         id="toggleIcon"
                         class="toggle-password"
@@ -44,10 +42,8 @@
             <div class="form-group">
                 <label>Xác nhận mật khẩu mới</label>
                 <div class="password-wrapper">
-                    <asp:TextBox ID="txtConfirm" runat="server"
-                        TextMode="Password"
-                        placeholder="Xác nhận mật khẩu mới"
-                        CssClass="password-input" />
+                    <input type="password" name="confirmPassword" id="confirmPassword" 
+                           class="password-input" placeholder="Xác nhận mật khẩu mới" required />
                 </div>
             </div>
 
@@ -94,31 +90,30 @@
                 </div>
             </div>
 
-            <asp:Label ID="lblMessage" runat="server" CssClass="msg" Visible="false" ClientIDMode="Static"></asp:Label>
+            <% if (!string.IsNullOrEmpty(Message)) { %>
+                <div class="msg <%= MessageClass %>" style="display:block;"><%= Message %></div>
+            <% } %>
 
-            <asp:Button ID="btnReset" runat="server"
-                Text="Đặt lại mật khẩu"
-                CssClass="btn-reset"
-                OnClick="btnReset_Click" />
+            <button type="submit" name="btnAction" value="reset" class="btn-reset">
+                Đặt lại mật khẩu
+            </button>
 
         </div>
     </form>
 
     <script>
         function togglePasswordVisibility() {
-            const newPass = document.getElementById('<%= txtNewPass.ClientID %>');
-            const confirmPass = document.getElementById('<%= txtConfirm.ClientID %>');
+            const newPass = document.getElementById('newPassword');
+            const confirmPass = document.getElementById('confirmPassword');
             const icon = document.getElementById('toggleIcon');
             const isPassword = newPass.type === 'password';
             newPass.type = isPassword ? 'text' : 'password';
             confirmPass.type = isPassword ? 'text' : 'password';
-            icon.src = isPassword
-                ? '../Assets/images/icon/eye-open.svg'
-                : '../Assets/images/icon/eye-close.svg';
+            icon.src = isPassword ? '../Assets/images/icon/eye-open.svg' : '../Assets/images/icon/eye-close.svg';
         }
 
         function checkPasswordStrength() {
-            const pass = document.getElementById('<%= txtNewPass.ClientID %>').value;
+            const pass = document.getElementById('newPassword').value;
             const bar = document.getElementById('strengthBar');
             const text = document.getElementById('strengthText');
 

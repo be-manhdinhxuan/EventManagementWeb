@@ -12,32 +12,42 @@ namespace EventManagementWeb.Account
 {
     public partial class ResetPassword : System.Web.UI.Page
     {
+        public string Message = "";
+        public string MessageClass = "";
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            // 1. Kiểm tra Token trên QueryString (Dữ liệu nhận từ URL)
+            string token = Request.QueryString["token"];
+
+            if (string.IsNullOrEmpty(token))
             {
-                string token = Request.QueryString["token"];
-                if (string.IsNullOrEmpty(token))
-                {
-                    ShowMessage("Liên kết đặt lại mật khẩu không hợp lệ.", false);
-                }
+                // Nếu không có token, chuyển hướng về trang Login
+                Response.Redirect("Login.aspx");
+                return;
+            }
+            // 2. Xử lý khi người dùng nhấn nút "Đặt lại mật khẩu" (Dữ liệu nhận từ POST Body)
+            if (Request.HttpMethod == "POST" && Request.Form["btnAction"] == "reset")
+            {
+                HandleResetPassword(token);
             }
         }
 
-        protected void btnReset_Click (object sender, EventArgs e)
+        private void HandleResetPassword(string token)
         {
-            string token = Request.QueryString["token"];
-            string pass1 = txtNewPass.Text;
-            string pass2 = txtConfirm.Text;
+            // Lấy dữ liệu thuần từ Request.Form
+            string pass1 = Request.Form["newPassword"];
+            string pass2 = Request.Form["confirmPassword"];
 
+            // Kiểm tra logic mật khẩu
             if (pass1 != pass2)
             {
-                ShowMessage("Mật khẩu không khớp", false);
+                SetMessage("Mật khẩu xác nhận không khớp", false);
                 return;
             }
             if (pass1.Length < 8)
             {
-                ShowMessage("Mật khẩu phải ít nhất 8 ký tự", false);
+                SetMessage("Mật khẩu phải ít nhất 8 ký tự", false);
                 return;
             }
 
@@ -45,96 +55,91 @@ namespace EventManagementWeb.Account
 
             using (MySqlConnection conn = new MySqlConnection(connStr))
             {
-                conn.Open();
-
-                string sql = @"SELECT prt.UserId 
-                           FROM PasswordResetTokens prt
-                           WHERE prt.Token = @token 
-                             AND prt.ExpiresAt > NOW() 
-                             AND prt.IsUsed = 0
-                           LIMIT 1";
-
-                int userId = 0;
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                try
                 {
-                    cmd.Parameters.AddWithValue("@token", token);
-                    object result = cmd.ExecuteScalar();
-                    if (result == null)
-                    {
-                        ShowMessage("Link đã hết hạn hoặc không hợp lệ", false);
-                        return;
-                    }
-                    userId = Convert.ToInt32(result);
-                }
+                    conn.Open();
 
-                string email = string.Empty; ;
-                string role = string.Empty;
-                string sqlUserInfo = "SELECT Email, Role FROM Users WHERE Id = @id";
-                using (MySqlCommand cmdUserInfo = new MySqlCommand(sqlUserInfo, conn))
-                {
-                    cmdUserInfo.Parameters.AddWithValue("@id", userId);
-                    using (MySqlDataReader reader = cmdUserInfo.ExecuteReader())
+                    // BƯỚC 1: Kiểm tra tính hợp lệ của Token trong Database
+                    string sqlToken = @"SELECT UserId FROM PasswordResetTokens 
+                                       WHERE Token = @token 
+                                         AND ExpiresAt > NOW() 
+                                         AND IsUsed = 0 LIMIT 1";
+
+                    int userId = 0;
+                    using (MySqlCommand cmd = new MySqlCommand(sqlToken, conn))
                     {
-                        if (reader.Read())
+                        cmd.Parameters.AddWithValue("@token", token);
+                        object result = cmd.ExecuteScalar();
+                        if (result == null)
                         {
-                            email = reader["Email"].ToString();
-                            role = reader["Role"].ToString();
+                            SetMessage("Liên kết đã hết hạn hoặc không hợp lệ", false);
+                            return;
+                        }
+                        userId = Convert.ToInt32(result);
+                    }
+
+                    // BƯỚC 2: Lấy thông tin User để chuẩn bị tạo Session đăng nhập sau khi đổi pass
+                    string email = "";
+                    string role = "";
+                    string sqlUser = "SELECT Email, Role FROM Users WHERE Id = @id";
+                    using (MySqlCommand cmd = new MySqlCommand(sqlUser, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", userId);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                email = reader["Email"].ToString();
+                                role = reader["Role"].ToString();
+                            }
                         }
                     }
-                }
 
-                // Hash mật khẩu mới và cập nhật
-                string hashed = BCrypt.Net.BCrypt.HashPassword(pass1);
-                string updateUser = "UPDATE Users SET Password = @pass WHERE Id = @id";
-                using (MySqlCommand cmd = new MySqlCommand(updateUser, conn))
-                {
-                    cmd.Parameters.AddWithValue("@pass", hashed);
-                    cmd.Parameters.AddWithValue("@id", userId);
-                    cmd.ExecuteNonQuery();
-                }
-
-                // Đánh dấu token đã dùng
-                string markUsed = "UPDATE PasswordResetTokens SET IsUsed = 1 WHERE Token = @token";
-                using (MySqlCommand cmd = new MySqlCommand(markUsed, conn))
-                {
-                    cmd.Parameters.AddWithValue("@token", token);
-                    cmd.ExecuteNonQuery();
-                }
-
-                ShowMessage("Đặt lại mật khẩu thành công!", true);
-
-                
-                // Tạo Session và FormsAuthentication Cookie
-                if (!string.IsNullOrEmpty(email))
-                {
-                    Session["UserId"] = userId;
-                    Session["Email"] = email;
-                    Session["Role"] = role; // Lưu Role vào Session
-
-                    FormsAuthentication.SetAuthCookie(email, false); // Đăng nhập tự động
-                    
-                    // Chuyển hướng dựa trên quyền
-                    if (role == "Admin")
+                    // BƯỚC 3: Hash mật khẩu mới và Cập nhật vào bảng Users
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pass1);
+                    string sqlUpdate = "UPDATE Users SET Password = @pass WHERE Id = @id";
+                    using (MySqlCommand cmd = new MySqlCommand(sqlUpdate, conn))
                     {
-                        Response.Redirect("~/Admin/Dashboard.aspx");
+                        cmd.Parameters.AddWithValue("@pass", hashedPassword);
+                        cmd.Parameters.AddWithValue("@id", userId);
+                        cmd.ExecuteNonQuery();
                     }
-                    else
+
+                    // BƯỚC 4: Vô hiệu hóa Token đã sử dụng
+                    string sqlMarkUsed = "UPDATE PasswordResetTokens SET IsUsed = 1 WHERE Token = @token";
+                    using (MySqlCommand cmd = new MySqlCommand(sqlMarkUsed, conn))
                     {
-                        Response.Redirect("~/User/Home.aspx");
+                        cmd.Parameters.AddWithValue("@token", token);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // BƯỚC 5: Thiết lập đăng nhập tự động sau khi đổi mật khẩu thành công
+                    if (!string.IsNullOrEmpty(email))
+                    {
+                        Session["UserId"] = userId;
+                        Session["Email"] = email;
+                        Session["Role"] = role;
+
+                        FormsAuthentication.SetAuthCookie(email, false);
+
+                        // Điều hướng dựa trên quyền hạn
+                        if (role == "Admin")
+                            Response.Redirect("~/Admin/Dashboard.aspx");
+                        else
+                            Response.Redirect("~/User/Home.aspx");
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ShowMessage("Lỗi hệ thống: Không tìm thấy thông tin người dùng.", false);
+                    SetMessage("Lỗi hệ thống: " + ex.Message, false);
                 }
             }
         }
 
-        private void ShowMessage(string text, bool isSuccess)
+        private void SetMessage(string text, bool isSuccess)
         {
-            lblMessage.Text = text;
-            lblMessage.CssClass = "msg " + (isSuccess ? "success-label" : "error-label");
-            lblMessage.Visible = true;
+            Message = text;
+            MessageClass = isSuccess ? "success-label" : "error-label";
         }
     }
 }
