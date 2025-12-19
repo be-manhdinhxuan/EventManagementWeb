@@ -11,38 +11,29 @@ namespace EventManagementWeb.User
 {
     public partial class Home : Page
     {
+        public DataTable UpcomingEvents;
+        public DataRow FeaturedEvent;
         private const string ToastSessionKey = "ToastMessage";
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Kiểm tra bảo mật (Nhận Session)
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("~/Account/Login.aspx");
+                return;
+            }
+
+            // Xử lý Đăng xuất thủ công qua Request.Form
+            if (Request.HttpMethod == "POST" && Request.Form["btnAction"] == "logout")
+            {
+                HandleLogout();
+            }
+
             if (!IsPostBack)
             {
                 CheckAndShowToast();
-                LoadUpcomingEvents();
-                LoadFeaturedEvent();
-            }
-        }
-
-        private void CheckAndShowToast()
-        {
-            if (Session[ToastSessionKey] != null)
-            {
-                var toastData = Session[ToastSessionKey] as System.Collections.Generic.Dictionary<string, string>;
-
-                if (toastData != null)
-                {
-                    
-                    string title = HttpUtility.JavaScriptStringEncode(toastData["Title"]);
-                    string message = HttpUtility.JavaScriptStringEncode(toastData["Message"]);
-                    string type = toastData["Type"];
-
-                    
-                    string script = $"showToast('{title}', '{message}', '{type}');";
-
-                    
-                    ClientScript.RegisterStartupScript(this.GetType(), "ShowToast", script, true);
-
-                    Session.Remove(ToastSessionKey);
-                }
+                LoadUpcomingEvents(); // Nạp dữ liệu vào biến public UpcomingEvents
+                LoadFeaturedEvent(); // Nạp dữ liệu vào biến public FeaturedEvent
             }
         }
 
@@ -52,20 +43,22 @@ namespace EventManagementWeb.User
             using (MySqlConnection conn = new MySqlConnection(connStr))
             {
                 string sql = @"
-                    SELECT 
-                        e.Id,
-                        e.Title,
-                        e.StartTime,
-                        e.Location,
+                    SELECT
+                        e.Id, 
+                        e.Title, 
+                        e.StartTime, 
+                        e.Location, 
                         e.ImageUrl,
-                        e.MaxCapacity,
+                        e.MaxCapacity, 
                         e.CurrentRegistrations,
                         (e.MaxCapacity - e.CurrentRegistrations) AS AvailableSlots,
                         ROUND((e.CurrentRegistrations * 100.0 / e.MaxCapacity), 0) AS RegistrationRate
                     FROM Events e
-                    WHERE e.Status = 'Draft' 
-                      AND e.IsDeleted = 0 
-                      AND e.StartTime > NOW()
+                    WHERE e.Status = 'Published'
+                      AND e.IsDeleted = 0
+                      AND e.StartTime > NOW()                          -- Sự kiện chưa diễn ra (sắp tới)
+                      AND (e.RegistrationDeadline IS NOT NULL 
+                           AND e.RegistrationDeadline < NOW())         -- Đã hết hạn đăng ký
                     ORDER BY e.StartTime ASC
                     LIMIT 6";
 
@@ -74,19 +67,8 @@ namespace EventManagementWeb.User
                     conn.Open();
                     using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                     {
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
-
-                        if (dt.Rows.Count > 0)
-                        {
-                            rptEvents.DataSource = dt;
-                            rptEvents.DataBind();
-                            pnlNoEvents.Visible = false;
-                        }
-                        else
-                        {
-                            pnlNoEvents.Visible = true;
-                        }
+                        UpcomingEvents = new DataTable();
+                        adapter.Fill(UpcomingEvents);
                     }
                 }
             }
@@ -107,25 +89,55 @@ namespace EventManagementWeb.User
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
                     conn.Open();
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                     {
-                        if (reader.Read())
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        if (dt.Rows.Count > 0)
                         {
-                            
+                            FeaturedEvent = dt.Rows[0]; // Lưu sự kiện nổi bật nhất
                         }
                     }
                 }
             }
         }
 
-        protected void Logout_Click(object sender, EventArgs e)
+        public string GetImageUrl(object imgObj)
+        {
+            string url = imgObj?.ToString();
+            return string.IsNullOrEmpty(url) ? "../Assets/images/default-event.jpg" : "../Uploads/" + url;
+        }
+
+        private void HandleLogout()
         {
             Session.Clear();
             Session.Abandon();
-
             FormsAuthentication.SignOut();
-
             Response.Redirect("~/Account/Login.aspx");
+        }
+
+        private void CheckAndShowToast()
+        {
+            if (Session[ToastSessionKey] != null)
+            {
+                var toastData = Session[ToastSessionKey] as System.Collections.Generic.Dictionary<string, string>;
+
+                if (toastData != null)
+                {
+
+                    string title = HttpUtility.JavaScriptStringEncode(toastData["Title"]);
+                    string message = HttpUtility.JavaScriptStringEncode(toastData["Message"]);
+                    string type = toastData["Type"];
+
+
+                    string script = $"showToast('{title}', '{message}', '{type}');";
+
+
+                    ClientScript.RegisterStartupScript(this.GetType(), "ShowToast", script, true);
+
+                    Session.Remove(ToastSessionKey);
+                }
+            }
         }
     }
 }

@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Trang chủ</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EventHub - Nền tảng quản lý sự kiện hàng đầu Việt Nam">
+    <meta name="keywords" content="quản lý sự kiện, event management, đăng ký sự kiện">
+    <meta name="author" content="EventHub">
     <link href="../Assets/css/style.css" rel="stylesheet" />
     <link href="../Assets/css/common-layout.css" rel="stylesheet" />
     <link href="../Assets/css/pages/home.css" rel="stylesheet" />
@@ -67,7 +72,7 @@
             <aside class="sidebar">
                 <ul class="sidebar__nav">
                     <li class="sidebar__item">
-                        <a href="#!" class="sidebar__link sidebar__link--active">
+                        <a href="Home.aspx" class="sidebar__link sidebar__link--active">
                             <svg
                                 width="32"
                                 height="32"
@@ -115,7 +120,7 @@
                     </li>
 
                     <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
+                        <a href="Notification.aspx" class="sidebar__link">
                             <svg
                                 width="32"
                                 height="32"
@@ -133,7 +138,7 @@
                     </li>
 
                     <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
+                        <a href="Setting.aspx" class="sidebar__link">
                             <svg
                                 width="32"
                                 height="32"
@@ -149,30 +154,19 @@
                     </li>
                 </ul>
                 <div class="sidebar__logout">
-                    <asp:LinkButton ID="lnkLogout" runat="server" CssClass="sidebar__link" OnClick="Logout_Click">
-
-                        <svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M21.3333 22.6667L28 16M28 16L21.3333 9.33333M28 16H12M12 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V6.66667C4 5.95942 4.28095 5.28115 4.78105 4.78105C5.28115 4.28095 5.95942 4 6.66667 4H12"
-                                stroke="currentColor"
-                                stroke-width="3"
-                                stroke-linecap="round"
-                                stroke-linejoin="round" />
+                    <button type="submit" name="btnAction" value="logout" class="sidebar__link" style="background: none; border: none; width: 100%; cursor: pointer;">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.3333 22.6667L28 16M28 16L21.3333 9.33333M28 16H12M12 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V6.66667C4 5.95942 4.28095 5.28115 4.78105 4.78105C5.28115 4.28095 5.95942 4 6.66667 4H12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         <span>Đăng xuất</span>
-                    </asp:LinkButton>
+                    </button>
                 </div>
             </aside>
 
             <!-- Header -->
             <header class="header">
                 <div class="header__logo">
-                    <a href="User/Home.aspx">
+                    <a href="Home.aspx">
                         <img
                             src="../Assets/images/logo-home.png"
                             alt="Event Management Logo"
@@ -223,48 +217,48 @@
                 <section class="events">
                     <h2 class="events__title">Sự kiện sắp tới</h2>
                     <div class="events__grid">
-                        <asp:Repeater ID="rptEvents" runat="server">
-                            <ItemTemplate>
-                                <article class="event-card">
-                                    <div class="event-card__image">
-                                        <img src='<%# string.IsNullOrEmpty(Eval("ImageUrl").ToString()) ? "../Assets/images/default-event.jpg" : "../Uploads/" + Eval("ImageUrl") %>'
-                                            alt='<%# Eval("Title") %>' />
+                        <% if (UpcomingEvents != null && UpcomingEvents.Rows.Count > 0)
+                            {
+                                foreach (System.Data.DataRow row in UpcomingEvents.Rows)
+                                { %>
+                        <article class="event-card">
+                            <div class="event-card__image">
+                                <img src="<%= GetImageUrl(row["ImageUrl"]) %>" alt="<%= row["Title"] %>" />
+                            </div>
+                            <div class="event-card__content">
+                                <h3 class="event-card__title"><%= row["Title"] %></h3>
+                                <div class="event-card__info">
+                                    <svg class="event-card__icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z" />
+                                    </svg>
+                                    <span><%= Convert.ToDateTime(row["StartTime"]).ToString("dd/MM/yyyy, HH:mm") %></span>
+                                </div>
+                                <div class="event-card__info">
+                                    <svg class="event-card__icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                    </svg>
+                                    <span><%= row["Location"] %></span>
+                                </div>
+                                <div class="event-card__progress">
+                                    <div class="event-card__progress-label">
+                                        <span>Các vị trí có sẵn</span>
+                                        <span><%= row["AvailableSlots"] %>/<%= row["MaxCapacity"] %></span>
                                     </div>
-                                    <div class="event-card__content">
-                                        <h3 class="event-card__title"><%# Eval("Title") %></h3>
-                                        <div class="event-card__info">
-                                            <svg class="event-card__icon" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z" />
-                                            </svg>
-                                            <span><%# Eval("StartTime", "{0:dd/MM/yyyy, HH:mm}") %></span>
-                                        </div>
-                                        <div class="event-card__info">
-                                            <svg class="event-card__icon" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                                            </svg>
-                                            <span><%# Eval("Location") %></span>
-                                        </div>
-                                        <div class="event-card__progress">
-                                            <div class="event-card__progress-label">
-                                                <span>Các vị trí có sẵn</span>
-                                                <span><%# Eval("AvailableSlots") %>/<%# Eval("MaxCapacity") %></span>
-                                            </div>
-                                            <div class="event-card__progress-bar">
-                                                <div class="event-card__progress-fill"
-                                                    style='width: <%# Eval("RegistrationRate", "{0:F0}") %>%'>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a href='EventDetail.aspx?id=<%# Eval("Id") %>' class="event-card__button btn">Xem chi tiết</a>
+                                    <div class="event-card__progress-bar">
+                                        <div class="event-card__progress-fill" style="width: <%= row["RegistrationRate"] %>%"></div>
                                     </div>
-                                </article>
-                            </ItemTemplate>
-                        </asp:Repeater>
-
-                        <!-- Nếu không có sự kiện -->
-                        <asp:Panel ID="pnlNoEvents" runat="server" Visible="false" CssClass="no-events">
+                                </div>
+                                <a href="EventDetail.aspx?id=<%= row["Id"] %>" class="event-card__button btn">Xem chi tiết</a>
+                            </div>
+                        </article>
+                        <%      }
+                        }
+                        else
+                        { %>
+                        <div class="no-events">
                             <p>Hiện tại chưa có sự kiện nào sắp diễn ra.</p>
-                        </asp:Panel>
+                        </div>
+                        <% } %>
                     </div>
 
                     <div class="load-more">
@@ -300,7 +294,7 @@
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="#" class="nav__link">
+                        <a href="Notification.aspx" class="nav__link">
                             <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5649 22.8437L12.5535 22.8456L12.4859 22.8789L12.4669 22.8827L12.4536 22.8789L12.3861 22.8446C12.3759 22.8421 12.3683 22.844 12.3633 22.8503L12.3595 22.8598L12.3433 23.2668L12.348 23.2859L12.3576 23.2982L12.4565 23.3686L12.4707 23.3724L12.4821 23.3686L12.581 23.2982L12.5925 23.283L12.5963 23.2668L12.5801 22.8608C12.5776 22.8506 12.5725 22.8449 12.5649 22.8437ZM12.8159 22.7362L12.8026 22.7381L12.6276 22.8265L12.6181 22.8361L12.6153 22.8465L12.6324 23.2554L12.6371 23.2668L12.6448 23.2745L12.8359 23.3619C12.8479 23.3651 12.8571 23.3626 12.8635 23.3543L12.8673 23.341L12.835 22.7571C12.8318 22.7451 12.8254 22.7381 12.8159 22.7362ZM12.136 22.7381C12.1318 22.7356 12.1268 22.7347 12.122 22.7358C12.1172 22.7369 12.113 22.7397 12.1103 22.7438L12.1046 22.7571L12.0723 23.341C12.0729 23.3524 12.0783 23.36 12.0884 23.3638L12.1027 23.3619L12.2938 23.2735L12.3034 23.2659L12.3062 23.2554L12.3233 22.8465L12.3205 22.8351L12.311 22.8256L12.136 22.7381Z" fill="#64748B" />
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M5.34315 9.28429C5.34315 7.51878 6.0445 5.82559 7.2929 4.57719C8.5413 3.32879 10.2345 2.62744 12 2.62744C13.7655 2.62744 15.4587 3.32879 16.7071 4.57719C17.9555 5.82559 18.6568 7.51878 18.6568 9.28429V12.8638L20.3895 16.3291C20.4693 16.4886 20.507 16.6659 20.4989 16.844C20.4909 17.0222 20.4375 17.1953 20.3437 17.347C20.25 17.4987 20.119 17.6239 19.9632 17.7107C19.8075 17.7976 19.6321 17.8431 19.4538 17.8431H15.6841C15.4726 18.6593 14.996 19.3821 14.3292 19.8981C13.6624 20.4141 12.8431 20.6941 12 20.6941C11.1569 20.6941 10.3376 20.4141 9.6708 19.8981C9.00401 19.3821 8.52744 18.6593 8.31591 17.8431H4.54623C4.3679 17.8431 4.19253 17.7976 4.03676 17.7107C3.881 17.6239 3.75001 17.4987 3.65625 17.347C3.56249 17.1953 3.50907 17.0222 3.50106 16.844C3.49304 16.6659 3.53071 16.4886 3.61047 16.3291L5.34315 12.8638V9.28429ZM10.3529 17.8431C10.5198 18.1322 10.7599 18.3723 11.0491 18.5392C11.3382 18.7061 11.6662 18.794 12 18.794C12.3338 18.794 12.6618 18.7061 12.9509 18.5392C13.2401 18.3723 13.4802 18.1322 13.6471 17.8431H10.3529ZM12 4.5294C10.7389 4.5294 9.5295 5.03036 8.63778 5.92207C7.74607 6.81379 7.24511 8.02321 7.24511 9.28429V12.8638C7.24509 13.1589 7.17639 13.45 7.04445 13.7139L5.93181 15.9411H18.0691L16.9565 13.7139C16.8242 13.45 16.7552 13.159 16.7549 12.8638V9.28429C16.7549 8.02321 16.2539 6.81379 15.3622 5.92207C14.4705 5.03036 13.2611 4.5294 12 4.5294Z" fill="currentColor" />
