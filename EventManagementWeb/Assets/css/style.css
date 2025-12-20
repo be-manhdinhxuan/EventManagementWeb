@@ -6,6 +6,7 @@
 
 
 @import url('component/buttons.css');
-@import url('component/modal.css');
+@import url('component/modal-logout.css');
+@import url('component/modal-event.css');
 @import url('component/alerts.css');
 

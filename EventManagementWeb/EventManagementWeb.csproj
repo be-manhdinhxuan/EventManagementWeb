@@ -155,6 +155,8 @@
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Assets\css\common-layout.css" />
+    <Content Include="Assets\css\component\modal-event.css" />
+    <Content Include="Assets\css\pages\event-detail.css" />
     <Content Include="Assets\css\pages\event.css" />
     <Content Include="Assets\css\pages\home.css" />
     <Content Include="Assets\css\component\alerts.css" />
@@ -167,7 +169,7 @@
     <Content Include="Assets\css\base\typography.css" />
     <Content Include="Assets\css\base\variables.css" />
     <Content Include="Assets\css\component\buttons.css" />
-    <Content Include="Assets\css\component\modal.css" />
+    <Content Include="Assets\css\component\modal-logout.css" />
     <Content Include="Assets\css\pages\login.css" />
     <Content Include="Assets\css\base\reset.css" />
     <Content Include="Assets\images\avatar.jpg" />
@@ -227,6 +229,7 @@
     <Content Include="Uploads\workshop-agile.jpg" />
     <Content Include="Uploads\year-end-party-2025.jpg" />
     <Content Include="User\Event.aspx" />
+    <Content Include="User\EventDetail.aspx" />
     <Content Include="User\Home.aspx" />
     <Content Include="User\MyEvent.aspx" />
     <Content Include="User\Notification.aspx" />
@@ -275,6 +278,13 @@
     </Compile>
     <Compile Include="User\Event.aspx.designer.cs">
       <DependentUpon>Event.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\EventDetail.aspx.cs">
+      <DependentUpon>EventDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\EventDetail.aspx.designer.cs">
+      <DependentUpon>EventDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
