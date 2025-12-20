@@ -15,9 +15,6 @@
 }
 
 .profile__block-information {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
     gap: 32px;
     padding: 16px 24px;
 }
@@ -217,10 +214,6 @@
 @media (max-width: 768px) {
     .main {
         padding: 12px;
-    }
-
-    .profile__block-information {
-        justify-content: center;
     }
 
     .settings__header {
