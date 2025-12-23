@@ -1,0 +1,470 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EventManagement.aspx.cs" Inherits="EventManagementWeb.Admin.EventManagement" %>
+
+<%@ Import Namespace="System.Data" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Quản lý sự kiện</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../Assets/css/style.css" rel="stylesheet" />
+    <link href="../Assets/css/common-layout.css" rel="stylesheet" />
+    <link href="../Assets/css/pages/event-management.css" rel="stylesheet" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="parent">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul class="sidebar__nav">
+                    <li class="sidebar__item">
+                        <a href="Dashboard.aspx" class="sidebar__link ">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.3333 12V4H28V12H17.3333ZM4 17.3333V4H14.6667V17.3333H4ZM17.3333 28V14.6667H28V28H17.3333ZM4 28V20H14.6667V28H4Z" fill="currentColor" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar__item">
+                        <a href="EventManagement.aspx" class="sidebar__link sidebar__link--active">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.33333 14.6668H12V17.3335H9.33333V14.6668ZM28 6.66683V25.3335C28 26.8135 26.8133 28.0002 25.3333 28.0002H6.66667C5.95942 28.0002 5.28115 27.7192 4.78105 27.2191C4.28095 26.719 4 26.0407 4 25.3335V6.66683C4 5.20016 5.2 4.00016 6.66667 4.00016H8V1.3335H10.6667V4.00016H21.3333V1.3335H24V4.00016H25.3333C26.0406 4.00016 26.7189 4.28111 27.219 4.78121C27.719 5.28131 28 5.95959 28 6.66683ZM6.66667 9.3335H25.3333V6.66683H6.66667V9.3335ZM25.3333 25.3335V12.0002H6.66667V25.3335H25.3333ZM20 17.3335H22.6667V14.6668H20V17.3335ZM14.6667 17.3335H17.3333V14.6668H14.6667V17.3335Z" fill="currentColor" />
+                            </svg>
+                            <span>Quản lý sự kiện</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar__item">
+                        <a href="UserManagement.aspx" class="sidebar__link">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.4267 13.8802C18.2366 12.7486 18.6721 11.3918 18.6721 10.0002C18.6721 8.60859 18.2366 7.25186 17.4267 6.12021C18.185 5.60359 19.0824 5.32928 20 5.33355C21.2377 5.33355 22.4247 5.82521 23.2998 6.70038C24.175 7.57555 24.6667 8.76253 24.6667 10.0002C24.6667 11.2379 24.175 12.4249 23.2998 13.3C22.4247 14.1752 21.2377 14.6669 20 14.6669C19.0824 14.6711 18.185 14.3968 17.4267 13.8802ZM7.33332 10.0002C7.33332 9.07723 7.60702 8.17498 8.1198 7.40755C8.63258 6.64012 9.36141 6.04198 10.2141 5.68877C11.0669 5.33557 12.0052 5.24315 12.9104 5.42321C13.8157 5.60328 14.6472 6.04774 15.2998 6.70038C15.9525 7.35303 16.3969 8.18455 16.577 9.08979C16.7571 9.99504 16.6646 10.9333 16.3114 11.7861C15.9582 12.6388 15.3601 13.3676 14.5927 13.8804C13.8252 14.3932 12.923 14.6669 12 14.6669C10.7623 14.6669 9.57533 14.1752 8.70016 13.3C7.82499 12.4249 7.33332 11.2379 7.33332 10.0002ZM9.99999 10.0002C9.99999 10.3958 10.1173 10.7825 10.3371 11.1114C10.5568 11.4402 10.8692 11.6966 11.2346 11.848C11.6001 11.9993 12.0022 12.039 12.3902 11.9618C12.7781 11.8846 13.1345 11.6941 13.4142 11.4144C13.6939 11.1347 13.8844 10.7784 13.9616 10.3904C14.0387 10.0024 13.9991 9.6003 13.8477 9.23484C13.6964 8.86939 13.44 8.55704 13.1111 8.33727C12.7822 8.11751 12.3956 8.00021 12 8.00021C11.4696 8.00021 10.9608 8.21093 10.5858 8.586C10.2107 8.96107 9.99999 9.46978 9.99999 10.0002ZM21.3333 22.6669V25.3335H2.66666V22.6669C2.66666 22.6669 2.66666 17.3335 12 17.3335C21.3333 17.3335 21.3333 22.6669 21.3333 22.6669ZM18.6667 22.6669C18.48 21.6269 16.8933 20.0002 12 20.0002C7.10666 20.0002 5.42666 21.7469 5.33332 22.6669M21.2667 17.3335C22.0839 17.9692 22.752 18.776 23.2242 19.6974C23.6964 20.6187 23.9612 21.6323 24 22.6669V25.3335H29.3333V22.6669C29.3333 22.6669 29.3333 17.8269 21.2533 17.3335H21.2667Z" fill="currentColor" />
+                            </svg>
+                            <span>Quản lý nhân viên</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar__item">
+                        <a href="Notification.aspx" class="sidebar__link">
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M6.66674 12C6.66674 9.52464 7.65007 7.15067 9.40041 5.40033C11.1507 3.64999 13.5247 2.66666 16.0001 2.66666C18.4754 2.66666 20.8494 3.64999 22.5997 5.40033C24.3501 7.15067 25.3334 9.52464 25.3334 12V17.0187L27.7627 21.8773C27.8746 22.101 27.9274 22.3495 27.9161 22.5992C27.9049 22.849 27.83 23.0918 27.6985 23.3044C27.5671 23.5171 27.3834 23.6927 27.165 23.8144C26.9467 23.9361 26.7008 24 26.4507 24H21.1654C20.8688 25.1443 20.2006 26.1578 19.2658 26.8812C18.3309 27.6047 17.1822 27.9972 16.0001 27.9972C14.8179 27.9972 13.6693 27.6047 12.7344 26.8812C11.7995 26.1578 11.1313 25.1443 10.8347 24H5.5494C5.29937 24 5.05349 23.9361 4.83509 23.8144C4.6167 23.6927 4.43305 23.5171 4.3016 23.3044C4.17014 23.0918 4.09524 22.849 4.084 22.5992C4.07277 22.3495 4.12557 22.101 4.2374 21.8773L6.66674 17.0187V12ZM13.6907 24C13.9248 24.4053 14.2614 24.742 14.6668 24.976C15.0722 25.21 15.532 25.3332 16.0001 25.3332C16.4681 25.3332 16.928 25.21 17.3333 24.976C17.7387 24.742 18.0753 24.4053 18.3094 24H13.6907ZM16.0001 5.33333C14.232 5.33333 12.5363 6.03571 11.286 7.28595C10.0358 8.53619 9.3334 10.2319 9.3334 12V17.0187C9.33337 17.4324 9.23706 17.8405 9.05207 18.2107L7.49207 21.3333H24.5094L22.9494 18.2107C22.764 17.8406 22.6672 17.4325 22.6667 17.0187V12C22.6667 10.2319 21.9644 8.53619 20.7141 7.28595C19.4639 6.03571 17.7682 5.33333 16.0001 5.33333Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <span>Thông báo</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar__item">
+                        <a href="Setting.aspx" class="sidebar__link">
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M26.5335 16.88C26.3198 16.6367 26.2019 16.3239 26.2019 16C26.2019 15.6761 26.3198 15.3633 26.5335 15.12L28.2402 13.2C28.4282 12.9902 28.545 12.7263 28.5738 12.446C28.6025 12.1658 28.5417 11.8836 28.4002 11.64L25.7335 7.02667C25.5934 6.78336 25.38 6.5905 25.1239 6.47558C24.8677 6.36066 24.5818 6.32955 24.3069 6.38667L21.8002 6.89334C21.4812 6.95924 21.1492 6.90612 20.8667 6.744C20.5842 6.58188 20.3709 6.32198 20.2669 6.01334L19.4535 3.57334C19.3641 3.30851 19.1937 3.07849 18.9664 2.91579C18.7391 2.75309 18.4664 2.66595 18.1869 2.66667H12.8535C12.5628 2.65149 12.275 2.7319 12.0343 2.89562C11.7935 3.05934 11.613 3.29736 11.5202 3.57334L10.7735 6.01334C10.6695 6.32198 10.4561 6.58188 10.1737 6.744C9.89119 6.90612 9.55914 6.95924 9.24019 6.89334L6.66685 6.38667C6.40625 6.34984 6.14059 6.39097 5.90332 6.50486C5.66605 6.61875 5.46779 6.80031 5.33352 7.02667L2.66685 11.64C2.52173 11.8809 2.45648 12.1615 2.48043 12.4416C2.50438 12.7218 2.6163 12.9873 2.80019 13.2L4.49352 15.12C4.70728 15.3633 4.82517 15.6761 4.82517 16C4.82517 16.3239 4.70728 16.6367 4.49352 16.88L2.80019 18.8C2.6163 19.0127 2.50438 19.2782 2.48043 19.5584C2.45648 19.8386 2.52173 20.1191 2.66685 20.36L5.33352 24.9733C5.47365 25.2166 5.68701 25.4095 5.94319 25.5244C6.19937 25.6393 6.48529 25.6705 6.76019 25.6133L9.26685 25.1067C9.58581 25.0408 9.91786 25.0939 10.2003 25.256C10.4828 25.4181 10.6962 25.678 10.8002 25.9867L11.6135 28.4267C11.7063 28.7026 11.8868 28.9407 12.1276 29.1044C12.3684 29.2681 12.6561 29.3485 12.9469 29.3333H18.2802C18.5597 29.3341 18.8324 29.2469 19.0597 29.0842C19.287 28.9215 19.4574 28.6915 19.5469 28.4267L20.3602 25.9867C20.4642 25.678 20.6776 25.4181 20.96 25.256C21.2425 25.0939 21.5746 25.0408 21.8935 25.1067L24.4002 25.6133C24.6751 25.6705 24.961 25.6393 25.2172 25.5244C25.4734 25.4095 25.6867 25.2166 25.8269 24.9733L28.4935 20.36C28.6351 20.1164 28.6959 19.8343 28.6671 19.554C28.6384 19.2737 28.5216 19.0098 28.3335 18.8L26.5335 16.88ZM24.5469 18.6667L25.6135 19.8667L23.9069 22.8267L22.3335 22.5067C21.3732 22.3104 20.3743 22.4735 19.5263 22.9651C18.6783 23.4566 18.0404 24.2425 17.7335 25.1733L17.2269 26.6667H13.8135L13.3335 25.1467C13.0267 24.2158 12.3887 23.43 11.5407 22.9384C10.6928 22.4468 9.69381 22.2837 8.73352 22.48L7.16019 22.8L5.42685 19.8533L6.49352 18.6533C7.14946 17.92 7.5121 16.9706 7.5121 15.9867C7.5121 15.0028 7.14946 14.0534 6.49352 13.32L5.42685 12.12L7.13352 9.18667L8.70685 9.50667C9.66715 9.70297 10.6661 9.53984 11.5141 9.04827C12.362 8.55669 13 7.77088 13.3069 6.84L13.8135 5.33334H17.2269L17.7335 6.85334C18.0404 7.78421 18.6783 8.57002 19.5263 9.0616C20.3743 9.55318 21.3732 9.7163 22.3335 9.52L23.9069 9.2L25.6135 12.16L24.5469 13.36C23.8983 14.0917 23.5401 15.0356 23.5401 16.0133C23.5401 16.9911 23.8983 17.935 24.5469 18.6667ZM15.5202 10.6667C14.4654 10.6667 13.4342 10.9795 12.5571 11.5655C11.6801 12.1515 10.9965 12.9845 10.5928 13.959C10.1892 14.9336 10.0835 16.0059 10.2893 17.0405C10.4951 18.075 11.0031 19.0254 11.749 19.7712C12.4948 20.5171 13.4451 21.0251 14.4797 21.2309C15.5143 21.4366 16.5866 21.331 17.5612 20.9274C18.5357 20.5237 19.3687 19.8401 19.9547 18.963C20.5407 18.086 20.8535 17.0548 20.8535 16C20.8535 14.5855 20.2916 13.229 19.2914 12.2288C18.2912 11.2286 16.9347 10.6667 15.5202 10.6667ZM15.5202 18.6667C14.9928 18.6667 14.4772 18.5103 14.0387 18.2173C13.6001 17.9242 13.2583 17.5078 13.0565 17.0205C12.8547 16.5332 12.8019 15.997 12.9048 15.4798C13.0077 14.9625 13.2616 14.4873 13.6346 14.1144C14.0075 13.7414 14.4827 13.4875 14.9999 13.3846C15.5172 13.2817 16.0534 13.3345 16.5407 13.5363C17.0279 13.7382 17.4444 14.08 17.7374 14.5185C18.0305 14.957 18.1869 15.4726 18.1869 16C18.1869 16.7072 17.9059 17.3855 17.4058 17.8856C16.9057 18.3857 16.2274 18.6667 15.5202 18.6667Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <span>Cài đặt</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar__logout">
+                    <button type="button" class="sidebar__link" onclick="openLogoutModal()" style="background: none; border: none; width: 100%; cursor: pointer;">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.3333 22.6667L28 16M28 16L21.3333 9.33333M28 16H12M12 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V6.66667C4 5.95942 4.28095 5.28115 4.78105 4.78105C5.28115 4.28095 5.95942 4 6.66667 4H12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span>Đăng xuất</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Modal Overlay -->
+            <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)" style="display: none;">
+                <div class="modal">
+                    <div class="icon-wrapper">
+                        <svg class="alert-icon" width="33" height="29" viewBox="0 0 33 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 28.5L16.5 0L33 28.5H0ZM16.5 24C16.925 24 17.2815 23.856 17.5695 23.568C17.8575 23.28 18.001 22.924 18 22.5C17.999 22.076 17.855 21.72 17.568 21.432C17.281 21.144 16.925 21 16.5 21C16.075 21 15.719 21.144 15.432 21.432C15.145 21.72 15.001 22.076 15 22.5C14.999 22.924 15.143 23.2805 15.432 23.5695C15.721 23.8585 16.077 24.002 16.5 24ZM15 19.5H18V12H15V19.5Z" fill="#EC1313" />
+                        </svg>
+                    </div>
+                    <h2>Xác nhận đăng xuất</h2>
+                    <p>Bạn có chắc chắn muốn đăng xuất khỏi tài khoản không? Phiên làm việc của bạn sẽ kết thúc.</p>
+                    <div class="button-group">
+                        <button type="button" class="btn-modal btn-cancel" onclick="closeLogoutModal()">Hủy bỏ</button>
+                        <button type="button" class="btn-modal btn-confirm" onclick="confirmAction()">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Xóa Sự Kiện -->
+            <div class="modal-overlay" id="deleteModalOverlay" onclick="closeDeleteModal()" style="display: none;">
+                <div class="modal">
+                    <div class="icon-wrapper">
+                        <svg class="alert-icon" width="33" height="29" viewBox="0 0 33 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 28.5L16.5 0L33 28.5H0ZM16.5 24C16.925 24 17.2815 23.856 17.5695 23.568C17.8575 23.28 18.001 22.924 18 22.5C17.999 22.076 17.855 21.72 17.568 21.432C17.281 21.144 16.925 21 16.5 21C16.075 21 15.719 21.144 15.432 21.432C15.145 21.72 15.001 22.076 15 22.5C14.999 22.924 15.143 23.2805 15.432 23.5695C15.721 23.8585 16.077 24.002 16.5 24ZM15 19.5H18V12H15V19.5Z" fill="#EC1313" />
+                        </svg>
+                    </div>
+                    <h2>Xác nhận xóa sự kiện</h2>
+                    <p>Bạn có chắc chắn muốn xóa sự kiện này không? Hành động này <strong>không thể hoàn tác</strong>.</p>
+                    <div class="button-group">
+                        <button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">Hủy bỏ</button>
+                        <button type="button" class="btn-modal btn-confirm" id="confirmDeleteBtn">Xác nhận xóa</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header -->
+            <header class="header">
+                <div class="header__logo">
+                    <a href="Home.aspx">
+                        <img
+                            src="../Assets/images/logo-home.png"
+                            alt="Event Management Logo"
+                            class="header__logo-image" />
+                        <span>Admin</span>
+                    </a>
+                </div>
+                <div class="header__actions">
+
+
+                    <!-- Menu avatar (mobile only) -->
+                    <div class="header__avatar-menu" id="avatarMenu">
+                        <a href="Setting.aspx">Cài đặt</a>
+                        <hr />
+                        <button type="submit" name="btnAction" value="logout" class="avatar-menu__logout">Đăng xuất</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main -->
+            <main class="main">
+                <div class="main__header">
+                    <h1 class="main__title">Quản lý sự kiện</h1>
+                    <a href="CreateNewEvent.aspx" class="btn btn--primary">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22C6.477 22 2 17.523 2 12ZM12 4C9.87827 4 7.84344 4.84285 6.34315 6.34315C4.84285 7.84344 4 9.87827 4 12C4 14.1217 4.84285 16.1566 6.34315 17.6569C7.84344 19.1571 9.87827 20 12 20C14.1217 20 16.1566 19.1571 17.6569 17.6569C19.1571 16.1566 20 14.1217 20 12C20 9.87827 19.1571 7.84344 17.6569 6.34315C16.1566 4.84285 14.1217 4 12 4Z" fill="white" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M13 7C13 6.73478 12.8946 6.48043 12.7071 6.29289C12.5196 6.10536 12.2652 6 12 6C11.7348 6 11.4804 6.10536 11.2929 6.29289C11.1054 6.48043 11 6.73478 11 7V11H7C6.73478 11 6.48043 11.1054 6.29289 11.2929C6.10536 11.4804 6 11.7348 6 12C6 12.2652 6.10536 12.5196 6.29289 12.7071C6.48043 12.8946 6.73478 13 7 13H11V17C11 17.2652 11.1054 17.5196 11.2929 17.7071C11.4804 17.8946 11.7348 18 12 18C12.2652 18 12.5196 17.8946 12.7071 17.7071C12.8946 17.5196 13 17.2652 13 17V13H17C17.2652 13 17.5196 12.8946 17.7071 12.7071C17.8946 12.5196 18 12.2652 18 12C18 11.7348 17.8946 11.4804 17.7071 11.2929C17.5196 11.1054 17.2652 11 17 11H13V7Z" fill="white" />
+                        </svg>
+                        Tạo sự kiện
+                    </a>
+                </div>
+
+                <section class="event-filter" aria-label="Bộ lọc quản lý sự kiện">
+                    <div class="event-filter__search">
+                        <label for="txtSearchEvent" class="event-filter__label">Tìm kiếm sự kiện</label>
+                        <div class="event-filter__search-wrapper">
+                            <svg class="event-filter__search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6.5 13C4.68333 13 3.146 12.3707 1.888 11.112C0.63 9.85333 0.000667196 8.316 5.29101e-07 6.5C-0.000666138 4.684 0.628667 3.14667 1.888 1.888C3.14733 0.629333 4.68467 0 6.5 0C8.31533 0 9.853 0.629333 11.113 1.888C12.373 3.14667 13.002 4.684 13 6.5C13 7.23333 12.8833 7.925 12.65 8.575C12.4167 9.225 12.1 9.8 11.7 10.3L17.3 15.9C17.4833 16.0833 17.575 16.3167 17.575 16.6C17.575 16.8833 17.4833 17.1167 17.3 17.3C17.1167 17.4833 16.8833 17.575 16.6 17.575C16.3167 17.575 16.0833 17.4833 15.9 17.3L10.3 11.7C9.8 12.1 9.225 12.4167 8.575 12.65C7.925 12.8833 7.23333 13 6.5 13ZM6.5 11C7.75 11 8.81267 10.5627 9.688 9.688C10.5633 8.81333 11.0007 7.75067 11 6.5C10.9993 5.24933 10.562 4.187 9.688 3.313C8.814 2.439 7.75133 2.00133 6.5 2C5.24867 1.99867 4.18633 2.43633 3.313 3.313C2.43967 4.18967 2.002 5.252 2 6.5C1.998 7.748 2.43567 8.81067 3.313 9.688C4.19033 10.5653 5.25267 11.0027 6.5 11Z" fill="#111827" />
+                            </svg>
+                            <input type="text" name="txtSearch" class="event-filter__search-input"
+                                placeholder="Tìm kiếm sự kiện theo tên..." value="<%= SearchTerm %>"
+                                onkeydown="if(event.keyCode==13){ this.form.submit(); return false; }" />
+                        </div>
+                    </div>
+                    <div class="event-filter__field">
+                        <label for="ddlStatus" class="event-filter__label">Trạng thái:</label>
+                        <div class="event-filter__select-wrapper">
+                            <select name="ddlStatus" id="ddlStatus" class="event-filter__select" onchange="submitFilter()">
+                                <option value="ALL" <%= SelectedStatus == "ALL" ? "selected" : "" %>>Tất cả</option>
+                                <option value="PUBLISHED" <%= SelectedStatus == "PUBLISHED" ? "selected" : "" %>>Đã xuất bản</option>
+                                <option value="DRAFT" <%= SelectedStatus == "DRAFT" ? "selected" : "" %>>Bản thảo</option>
+                                <option value="PAST" <%= SelectedStatus == "PAST" ? "selected" : "" %>>Đã qua</option>
+                            </select>
+                            <svg class="event-filter__select-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M1 1.5L6 6.5L11 1.5" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <button type="submit" name="btnAction" value="reset" class="event-filter__reset">
+                        <svg class="event-filter__reset-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 10C20 15.523 15.523 20 10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0V2C8.11876 2.00015 6.29775 2.66326 4.85692 3.87283C3.41608 5.0824 2.4476 6.76104 2.12164 8.61383C1.79567 10.4666 2.13307 12.375 3.07456 14.0037C4.01605 15.6324 5.5014 16.8772 7.26962 17.5194C9.03785 18.1616 10.9758 18.1601 12.7431 17.5152C14.5103 16.8703 15.9938 15.6233 16.9328 13.9931C17.8718 12.363 18.2063 10.4541 17.8775 8.60182C17.5487 6.74954 16.5777 5.07237 15.135 3.865L13 6V0H19L16.553 2.447C17.636 3.38479 18.5044 4.54475 19.0992 5.84804C19.694 7.15133 20.0012 8.5674 20 10Z" fill="currentColor" />
+                        </svg>
+                        <span>Đặt lại</span>
+                    </button>
+                </section>
+
+                <div class="table" role="table" aria-label="Danh sách sự kiện">
+                    <div class="table__header" role="row">
+                        <div class="table__header-cell" role="columnheader">Thumbnail</div>
+                        <div class="table__header-cell" role="columnheader">Tiêu đề</div>
+                        <div class="table__header-cell" role="columnheader">Ngày</div>
+                        <div class="table__header-cell" role="columnheader">Địa chỉ</div>
+                        <div class="table__header-cell" role="columnheader">Trạng thái</div>
+                        <div class="table__header-cell" role="columnheader">Đăng ký</div>
+                        <div class="table__header-cell" role="columnheader">Hành động</div>
+                    </div>
+
+                    <div class="table__body">
+                        <% if (EventList.Rows.Count == 0)
+                            { %>
+                        <div class="table__row table__row--empty">
+                            <p>Chưa có sự kiện nào phù hợp với bộ lọc.</p>
+                        </div>
+                        <% }
+                            else
+                            { %>
+                        <% foreach (DataRow row in EventList.Rows)
+                            { %>
+                        <article class="table__row" role="row">
+                            <div class="table__cell" role="cell">
+                                <img src="<%= GetEventImage(row["ImageUrl"]) %>" alt="<%= row["Title"] %>" class="table__thumbnail">
+                            </div>
+                            <div class="table__cell" role="cell">
+                                <div class="table__event-title">
+                                    <a href="CreateNewEvent.aspx?edit=<%= row["Id"] %>"><%= row["Title"] %></a>
+                                </div>
+                            </div>
+                            <div class="table__cell" role="cell">
+                                <%= Convert.ToDateTime(row["StartTime"]).ToString("dd-MM-yyyy") %>
+                            </div>
+                            <div class="table__cell" role="cell"><%= row["Location"] %></div>
+                            <div class="table__cell" role="cell">
+                                <span class="badge <%= GetEventStatusClass(row["Status"].ToString(), Convert.ToDateTime(row["StartTime"])) %>">
+                                    <%= GetEventStatusText(row["Status"].ToString(), Convert.ToDateTime(row["StartTime"])) %>
+                    </span>
+                            </div>
+                            <div class="table__cell table__registrations" role="cell">
+                                <%= row["CurrentRegistrations"] %> / <%= row["MaxCapacity"] %>
+                            </div>
+                            <div class="table__cell table__actions" role="cell">
+                                <a href="EventRegistrationManagement.aspx?id=<%= row["Id"] %>" class="action-btn action-btn--view" title="Xem đăng ký">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9ZM12 4.5C17 4.5 21.27 7.61 23 12C21.27 16.39 17 19.5 12 19.5C7 19.5 2.73 16.39 1 12C2.73 7.61 7 4.5 12 4.5ZM3.18 12C3.98825 13.6503 5.24331 15.0407 6.80248 16.0133C8.36165 16.9858 10.1624 17.5013 12 17.5013C13.8376 17.5013 15.6383 16.9858 17.1975 16.0133C18.7567 15.0407 20.0117 13.6503 20.82 12C20.0117 10.3497 18.7567 8.95925 17.1975 7.98675C15.6383 7.01424 13.8376 6.49868 12 6.49868C10.1624 6.49868 8.36165 7.01424 6.80248 7.98675C5.24331 8.95925 3.98825 10.3497 3.18 12Z" fill="currentColor" />
+                                    </svg>
+                                </a>
+                                <a href="CreateNewEvent.aspx?edit=<%= row["Id"] %>" class="action-btn action-btn--edit" title="Chỉnh sửa">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.621 3.25 16.863 3.15C17.105 3.05 17.359 3 17.625 3C17.891 3 18.1493 3.05 18.4 3.15C18.6507 3.25 18.8673 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.771 5.4 20.863 5.65C20.955 5.9 21.0007 6.15 21 6.4C21 6.66667 20.9543 6.921 20.863 7.163C20.7717 7.405 20.6257 7.62567 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="currentColor" />
+                                    </svg>
+                                </a>
+                                <button type="button" class="action-btn action-btn--delete" title="Xóa"
+                                    onclick="openDeleteModal(<%= row["Id"] %>)">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 3H10.5C10.3011 3 10.1103 3.07902 9.96964 3.21967C9.82898 3.36032 9.74996 3.55109 9.74996 3.75V4.5H14.25V3.75C14.25 3.55109 14.1709 3.36032 14.0303 3.21967C13.8896 3.07902 13.6989 3 13.5 3ZM16.5 4.5V3.75C16.5 2.95435 16.1839 2.19129 15.6213 1.62868C15.0587 1.06607 14.2956 0.75 13.5 0.75H10.5C9.70432 0.75 8.94125 1.06607 8.37864 1.62868C7.81604 2.19129 7.49997 2.95435 7.49996 3.75V4.5H3.37646C3.0781 4.5 2.79195 4.61853 2.58097 4.8295C2.36999 5.04048 2.25146 5.32663 2.25146 5.625C2.25146 5.92337 2.36999 6.20952 2.58097 6.4205C2.79195 6.63147 3.0781 6.75 3.37646 6.75H3.84446L4.31996 18.1875C4.36835 19.3477 4.86332 20.4442 5.7014 21.2479C6.53948 22.0516 7.6558 22.5002 8.81696 22.5H15.1845C16.3454 22.4998 17.4613 22.051 18.2991 21.2474C19.1368 20.4437 19.6316 19.3474 19.68 18.1875L20.157 6.75H20.625C20.9233 6.75 21.2095 6.63147 21.4205 6.4205C21.6314 6.20952 21.75 5.92337 21.75 5.625C21.75 5.32663 21.6314 5.04048 21.4205 4.8295C21.2095 4.61853 20.9233 4.5 20.625 4.5H16.5ZM17.904 6.75H6.09597L6.56847 18.093C6.59247 18.6732 6.83987 19.2217 7.25893 19.6237C7.67799 20.0257 8.23626 20.2501 8.81696 20.25H15.1845C15.7649 20.2497 16.3228 20.0251 16.7415 19.6232C17.1603 19.2212 17.4075 18.673 17.4315 18.093L17.904 6.75ZM8.62496 9.75V17.25C8.62497 17.5484 8.74349 17.8345 8.95447 18.0455C9.16545 18.2565 9.4516 18.375 9.74996 18.375C10.0483 18.375 10.3345 18.2565 10.5455 18.0455C10.7564 17.8345 10.875 17.5484 10.875 17.25V9.75C10.875 9.45163 10.7564 9.16548 10.5455 8.9545C10.3345 8.74353 10.0483 8.625 9.74996 8.625C9.4516 8.625 9.16545 8.74353 8.95447 8.9545C8.74349 9.16548 8.62497 9.45163 8.62496 9.75ZM14.25 8.625C14.5483 8.625 14.8345 8.74353 15.0455 8.9545C15.2564 9.16548 15.375 9.45163 15.375 9.75V17.25C15.375 17.5484 15.2564 17.8345 15.0455 18.0455C14.8345 18.2565 14.5483 18.375 14.25 18.375C13.9516 18.375 13.6654 18.2565 13.4545 18.0455C13.2435 17.8345 13.125 17.5484 13.125 17.25V9.75C13.125 9.45163 13.2435 9.16548 13.4545 8.9545C13.6654 8.74353 13.9516 8.625 14.25 8.625Z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </article>
+                        <% } %>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Event Cards -->
+                <aside class="cards-panel" aria-label="Danh sách sự kiện dạng thẻ">
+                    <% foreach (DataRow row in EventList.Rows)
+                        { %>
+                    <article class="event-card">
+                        <img src="<%= GetEventImage(row["ImageUrl"]) %>" alt="<%= row["Title"] %>" class="event-card__image">
+                        <div class="event-card__content">
+                            <div class="event-card__header">
+                                <h3 class="event-card__title"><%= row["Title"] %></h3>
+                                <span class="badge <%= GetEventStatusClass(row["Status"].ToString(), Convert.ToDateTime(row["StartTime"])) %>">
+                                    <%= GetEventStatusText(row["Status"].ToString(), Convert.ToDateTime(row["StartTime"])) %>
+                    </span>
+                            </div>
+                            <div class="event-card__meta">
+                                <div class="event-card__meta-item">
+                                    <svg>
+                                        <!-- icon date -->
+                                    </svg>
+                                    <span><%= Convert.ToDateTime(row["StartTime"]).ToString("dd-MM-yyyy") %></span>
+                                </div>
+                                <div class="event-card__meta-item">
+                                    <svg>
+                                        <!-- icon location -->
+                                    </svg>
+                                    <span><%= row["Location"] %></span>
+                                </div>
+                                <div class="event-card__meta-item">
+                                    <svg>
+                                        <!-- icon user -->
+                                    </svg>
+                                    <span>Đăng ký: <%= row["CurrentRegistrations"] %>/<%= row["MaxCapacity"] %></span>
+                                </div>
+                            </div>
+                            <div class="event-card__footer">
+                                <a href="EventRegistrationManagement.aspx?id=<%= row["Id"] %>" class="action-btn action-btn--view" title="Xem">
+                                    <svg>
+                                        <!-- icon view -->
+                                    </svg>
+                                </a>
+                                <a href="CreateNewEvent.aspx?edit=<%= row["Id"] %>" class="action-btn action-btn--edit" title="Chỉnh sửa">
+                                    <svg>
+                                        <!-- icon edit -->
+                                    </svg>
+                                </a>
+                                <button type="submit" name="btnAction" value="delete_<%= row["Id"] %>" class="action-btn action-btn--delete" title="Xóa"
+                                    onclick="return confirm('Bạn có chắc muốn xóa sự kiện này?')">
+                                    <svg>
+                                        <!-- icon delete -->
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    <% } %>
+                </aside>
+
+                <nav class="pagination" aria-label="Phân trang sự kiện">
+                    <div class="pagination__info">Hiển thị <%= (CurrentPage - 1) * PageSize + 1 %>-<%= Math.Min(CurrentPage * PageSize, EventList.Rows.Count + (CurrentPage - 1) * PageSize) %> trong <%= TotalPages * PageSize %> sự kiện</div>
+                    <div class="pagination__controls">
+                        <button type="submit" name="pageAction" value="<%= CurrentPage - 1 %>" class="pagination__btn" <%= CurrentPage == 1 ? "disabled" : "" %>>‹</button>
+                        <% for (int i = 1; i <= TotalPages; i++)
+                            { %>
+                        <button type="submit" name="pageAction" value="<%= i %>" class="pagination__btn <%= i == CurrentPage ? "pagination__btn--active" : "" %>"><%= i %></button>
+                        <% } %>
+                        <button type="submit" name="pageAction" value="<%= CurrentPage + 1 %>" class="pagination__btn" <%= CurrentPage == TotalPages ? "disabled" : "" %>>›</button>
+                    </div>
+                </nav>
+
+            </main>
+
+            <!-- Nav Mobile -->
+            <nav class="nav">
+                <ul class="nav__mobile">
+                    <li class="nav__item">
+                        <a href="Dashboard.aspx" class="nav__link ">
+                            <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.625 19.75H8.8125V14.75C8.8125 14.4667 8.9145 14.2293 9.1185 14.038C9.3225 13.8467 9.57467 13.7507 9.875 13.75H14.125C14.426 13.75 14.6786 13.846 14.8826 14.038C15.0866 14.23 15.1882 14.4673 15.1875 14.75V19.75H18.375V10.75L12 6.25L5.625 10.75V19.75ZM3.5 19.75V10.75C3.5 10.4333 3.57544 10.1333 3.72631 9.85C3.87719 9.56667 4.08508 9.33333 4.35 9.15L10.725 4.65C11.0969 4.38333 11.5219 4.25 12 4.25C12.4781 4.25 12.9031 4.38333 13.275 4.65L19.65 9.15C19.9156 9.33333 20.1239 9.56667 20.2747 9.85C20.4256 10.1333 20.5007 10.4333 20.5 10.75V19.75C20.5 20.3 20.2917 20.771 19.8752 21.163C19.4587 21.555 18.9587 21.7507 18.375 21.75H14.125C13.824 21.75 13.5718 21.654 13.3685 21.462C13.1652 21.27 13.0632 21.0327 13.0625 20.75V15.75H10.9375V20.75C10.9375 21.0333 10.8355 21.271 10.6315 21.463C10.4275 21.655 10.1753 21.7507 9.875 21.75H5.625C5.04062 21.75 4.54054 21.5543 4.12475 21.163C3.70896 20.7717 3.50071 20.3007 3.5 19.75Z" fill="currentColor" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="EventManagement.aspx" class="nav__link nav__link--active">
+                            <svg width="24" height="27" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7.27778 13.5H9.16667V15.4H7.27778V13.5ZM20.5 7.8V21.1C20.5 22.1545 19.6594 23 18.6111 23H5.38889C4.88792 23 4.40748 22.7998 4.05324 22.4435C3.69901 22.0872 3.5 21.6039 3.5 21.1V7.8C3.5 6.755 4.35 5.9 5.38889 5.9H6.33333V4H8.22222V5.9H15.7778V4H17.6667V5.9H18.6111C19.1121 5.9 19.5925 6.10018 19.9468 6.4565C20.301 6.81282 20.5 7.29609 20.5 7.8ZM5.38889 9.7H18.6111V7.8H5.38889V9.7ZM18.6111 21.1V11.6H5.38889V21.1H18.6111ZM14.8333 15.4H16.7222V13.5H14.8333V15.4ZM11.0556 15.4H12.9444V13.5H11.0556V15.4Z" fill="currentColor" />
+                            </svg>
+                            <span>Sự kiện</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="UserManagement.aspx" class="nav__link">
+                            <svg width="36" height="27" viewBox="0 0 36 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.2305 12.2647C19.9291 11.3028 20.3047 10.1496 20.3047 8.9667C20.3047 7.78383 19.9291 6.63061 19.2305 5.66871C19.8846 5.22958 20.6585 4.99641 21.45 5.00004C22.5175 5.00004 23.5413 5.41796 24.2961 6.16185C25.0509 6.90574 25.475 7.91468 25.475 8.9667C25.475 10.0187 25.0509 11.0277 24.2961 11.7715C23.5413 12.5154 22.5175 12.9334 21.45 12.9334C20.6585 12.937 19.8846 12.7038 19.2305 12.2647ZM10.525 8.9667C10.525 8.18217 10.7611 7.41526 11.2033 6.76294C11.6456 6.11063 12.2742 5.60221 13.0097 5.30199C13.7452 5.00176 14.5545 4.92321 15.3352 5.07626C16.116 5.22931 16.8332 5.6071 17.3961 6.16185C17.959 6.7166 18.3424 7.42339 18.4977 8.19284C18.653 8.9623 18.5733 9.75986 18.2686 10.4847C17.964 11.2095 17.4481 11.829 16.7862 12.2649C16.1243 12.7007 15.3461 12.9334 14.55 12.9334C13.4825 12.9334 12.4587 12.5154 11.7039 11.7715C10.9491 11.0277 10.525 10.0187 10.525 8.9667ZM12.825 8.9667C12.825 9.30293 12.9262 9.6316 13.1157 9.91116C13.3053 10.1907 13.5747 10.4086 13.8899 10.5373C14.2051 10.666 14.5519 10.6996 14.8865 10.634C15.2211 10.5684 15.5285 10.4065 15.7698 10.1688C16.011 9.93103 16.1753 9.62812 16.2419 9.29835C16.3084 8.96858 16.2743 8.62677 16.1437 8.31614C16.0131 8.0055 15.792 7.74 15.5084 7.5532C15.2247 7.36641 14.8912 7.2667 14.55 7.2667C14.0925 7.2667 13.6537 7.44581 13.3302 7.76462C13.0067 8.08343 12.825 8.51583 12.825 8.9667ZM22.6 19.7333V22H6.5V19.7333C6.5 19.7333 6.5 15.2 14.55 15.2C22.6 15.2 22.6 19.7333 22.6 19.7333ZM20.3 19.7333C20.139 18.8493 18.7705 17.4667 14.55 17.4667C10.3295 17.4667 8.8805 18.9513 8.8 19.7333M22.5425 15.2C23.2473 15.7403 23.8236 16.4261 24.2309 17.2093C24.6382 17.9924 24.8666 18.8539 24.9 19.7333V22H29.5V19.7333C29.5 19.7333 29.5 15.6193 22.531 15.2H22.5425Z" fill="currentColor" />
+                            </svg>
+                            <span>Nhân viên</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="Notification.aspx" class="nav__link">
+                            <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5649 22.8437L12.5535 22.8456L12.4859 22.8789L12.4669 22.8827L12.4536 22.8789L12.3861 22.8446C12.3759 22.8421 12.3683 22.844 12.3633 22.8503L12.3595 22.8598L12.3433 23.2668L12.348 23.2859L12.3576 23.2982L12.4565 23.3686L12.4707 23.3724L12.4821 23.3686L12.581 23.2982L12.5925 23.283L12.5963 23.2668L12.5801 22.8608C12.5776 22.8506 12.5725 22.8449 12.5649 22.8437ZM12.8159 22.7362L12.8026 22.7381L12.6276 22.8265L12.6181 22.8361L12.6153 22.8465L12.6324 23.2554L12.6371 23.2668L12.6448 23.2745L12.8359 23.3619C12.8479 23.3651 12.8571 23.3626 12.8635 23.3543L12.8673 23.341L12.835 22.7571C12.8318 22.7451 12.8254 22.7381 12.8159 22.7362ZM12.136 22.7381C12.1318 22.7356 12.1268 22.7347 12.122 22.7358C12.1172 22.7369 12.113 22.7397 12.1103 22.7438L12.1046 22.7571L12.0723 23.341C12.0729 23.3524 12.0783 23.36 12.0884 23.3638L12.1027 23.3619L12.2938 23.2735L12.3034 23.2659L12.3062 23.2554L12.3233 22.8465L12.3205 22.8351L12.311 22.8256L12.136 22.7381Z" fill="#64748B" />
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.34315 9.28429C5.34315 7.51878 6.0445 5.82559 7.2929 4.57719C8.5413 3.32879 10.2345 2.62744 12 2.62744C13.7655 2.62744 15.4587 3.32879 16.7071 4.57719C17.9555 5.82559 18.6568 7.51878 18.6568 9.28429V12.8638L20.3895 16.3291C20.4693 16.4886 20.507 16.6659 20.4989 16.844C20.4909 17.0222 20.4375 17.1953 20.3437 17.347C20.25 17.4987 20.119 17.6239 19.9632 17.7107C19.8075 17.7976 19.6321 17.8431 19.4538 17.8431H15.6841C15.4726 18.6593 14.996 19.3821 14.3292 19.8981C13.6624 20.4141 12.8431 20.6941 12 20.6941C11.1569 20.6941 10.3376 20.4141 9.6708 19.8981C9.00401 19.3821 8.52744 18.6593 8.31591 17.8431H4.54623C4.3679 17.8431 4.19253 17.7976 4.03676 17.7107C3.881 17.6239 3.75001 17.4987 3.65625 17.347C3.56249 17.1953 3.50907 17.0222 3.50106 16.844C3.49304 16.6659 3.53071 16.4886 3.61047 16.3291L5.34315 12.8638V9.28429ZM10.3529 17.8431C10.5198 18.1322 10.7599 18.3723 11.0491 18.5392C11.3382 18.7061 11.6662 18.794 12 18.794C12.3338 18.794 12.6618 18.7061 12.9509 18.5392C13.2401 18.3723 13.4802 18.1322 13.6471 17.8431H10.3529ZM12 4.5294C10.7389 4.5294 9.5295 5.03036 8.63778 5.92207C7.74607 6.81379 7.24511 8.02321 7.24511 9.28429V12.8638C7.24509 13.1589 7.17639 13.45 7.04445 13.7139L5.93181 15.9411H18.0691L16.9565 13.7139C16.8242 13.45 16.7552 13.159 16.7549 12.8638V9.28429C16.7549 8.02321 16.2539 6.81379 15.3622 5.92207C14.4705 5.03036 13.2611 4.5294 12 4.5294Z" fill="currentColor" />
+                            </svg>
+                            <span>Thông báo</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </form>
+    <script type="text/javascript">
+        // 1. Hàm mở Modal
+        function openLogoutModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.style.display = 'flex';
+        }
+
+        // 2. Hàm đóng Modal
+        function closeLogoutModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.style.display = 'none';
+        }
+
+        // 3. Hàm XÁC NHẬN ĐĂNG XUẤT 
+        function confirmAction() {
+            // Tạo một input ẩn tạm thời để gửi giá trị btnAction=logout lên Server
+            const form = document.getElementById('form1');
+            const old = form.querySelector('input[name="btnAction"]');
+            if (old) old.remove();
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'btnAction';
+            hiddenField.value = 'logout';
+
+            form.appendChild(hiddenField);
+            form.submit(); // Gửi form đi
+        }
+
+        // 4. Đóng khi click ra ngoài vùng trắng
+        function closeModalOnOverlay(event) {
+            if (event.target.id === 'modalOverlay') {
+                closeLogoutModal();
+            }
+        }
+
+        function toggleNotificationDropdown(e) {
+            e.stopPropagation();
+            document.getElementById('notificationDropdown').classList.toggle('show');
+            document.getElementById('avatarMenu').classList.remove('show');
+        }
+
+        function toggleAvatarMenu(e) {
+            if (window.innerWidth <= 768) {
+                e.stopPropagation();
+                document.getElementById('avatarMenu').classList.toggle('show');
+                document.getElementById('notificationDropdown').classList.remove('show');
+            }
+        }
+
+        // Đóng dropdown khi click bên ngoài
+        document.addEventListener('click', function () {
+            document.getElementById('notificationDropdown').classList.remove('show');
+            document.getElementById('avatarMenu').classList.remove('show');
+        });
+        function submitFilter() {
+            // Tìm form chứa bộ lọc và gửi đi
+            document.getElementById('form1').submit();
+        }
+
+        let eventIdToDelete = null; // Biến lưu Id sự kiện cần xóa
+
+        // Mở modal xóa và lưu Id sự kiện
+        function openDeleteModal(eventId) {
+            eventIdToDelete = eventId;
+            document.getElementById('deleteModalOverlay').style.display = 'flex';
+        }
+
+        // Đóng modal xóa
+        function closeDeleteModal() {
+            document.getElementById('deleteModalOverlay').style.display = 'none';
+            eventIdToDelete = null;
+        }
+
+        // Xử lý khi click Xác nhận xóa
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            if (eventIdToDelete !== null) {
+                // Submit form với action xóa và Id sự kiện
+                const form = document.getElementById('form1');
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'btnAction';
+                input.value = 'delete_' + eventIdToDelete;
+                form.appendChild(input);
+                form.submit();
+            }
+        });
+
+        // Đóng modal khi click overlay (giống modal đăng xuất)
+        function closeModalOnOverlay(event) {
+            if (event.target.id === 'deleteModalOverlay') {
+                closeDeleteModal();
+            }
+        }
+    </script>
+</body>
+</html>
