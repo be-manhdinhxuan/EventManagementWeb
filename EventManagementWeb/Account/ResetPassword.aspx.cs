@@ -23,7 +23,8 @@ namespace EventManagementWeb.Account
             if (string.IsNullOrEmpty(token))
             {
                 // Nếu không có token, chuyển hướng về trang Login
-                Response.Redirect("Login.aspx");
+                Response.Redirect("Login.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
                 return;
             }
             // 2. Xử lý khi người dùng nhấn nút "Đặt lại mật khẩu" (Dữ liệu nhận từ POST Body)
@@ -60,9 +61,9 @@ namespace EventManagementWeb.Account
                     conn.Open();
 
                     // BƯỚC 1: Kiểm tra tính hợp lệ của Token trong Database
-                    string sqlToken = @"SELECT UserId FROM PasswordResetTokens 
-                                       WHERE Token = @token 
-                                         AND ExpiresAt > NOW() 
+                    string sqlToken = @"SELECT UserId FROM PasswordResetTokens
+                                       WHERE Token = @token
+                                         AND ExpiresAt > NOW()
                                          AND IsUsed = 0 LIMIT 1";
 
                     int userId = 0;

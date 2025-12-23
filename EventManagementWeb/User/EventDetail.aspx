@@ -476,48 +476,48 @@
             const modal = document.getElementById('eventModalOverlay');
             const title = document.getElementById('eventModalTitle');
             const desc = document.getElementById('eventModalDesc');
-            const iconWrapper = document.getElementById('eventModalIcon'); // div chứa icon
+            const iconWrapper = document.getElementById('eventModalIcon');
             const reasonGroup = document.getElementById('cancelReasonGroup');
             const noteGroup = document.getElementById('registerNoteGroup');
             const confirmBtn = document.getElementById('eventModalConfirmBtn');
+
+            // RESET textarea trước khi mở modal
+            document.getElementById('cancelReason').value = '';
+            document.getElementById('registerNote').value = '';
+
+            // Re-enable nút confirm
+            confirmBtn.disabled = false;
 
             if (action === 'register') {
                 title.textContent = 'Xác nhận đăng ký?';
                 desc.textContent = 'Bạn có chắc chắn muốn đăng ký tham gia sự kiện này không?';
                 iconWrapper.className = 'modal-overlay__icon-wrapper modal-overlay__icon-wrapper--success';
                 confirmBtn.textContent = 'Đăng ký ngay';
-                confirmBtn.className = 'modal-overlay__button modal-overlay__button--confirm'; // xanh
+                confirmBtn.className = 'modal-overlay__button modal-overlay__button--confirm';
 
-                // Icon thành công
                 iconWrapper.innerHTML = `
-                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_79_1017)">
-                <path d="M26.5494 14.55C26.8226 14.2671 26.9738 13.8882 26.9704 13.4949C26.967 13.1016 26.8092 12.7254 26.5311 12.4473C26.253 12.1692 25.8768 12.0114 25.4835 12.008C25.0902 12.0046 24.7113 12.1558 24.4284 12.429L16.4784 20.379L11.5284 15.429C11.2455 15.1558 10.8666 15.0046 10.4733 15.008C10.08 15.0114 9.70378 15.1692 9.42567 15.4473C9.14756 15.7254 8.9898 16.1016 8.98638 16.4949C8.98297 16.8882 9.13416 17.2671 9.4074 17.55L15.4074 23.55C15.6887 23.8312 16.0701 23.9892 16.4679 23.9892C16.8656 23.9892 17.2471 23.8312 17.5284 23.55L26.5284 14.55H26.5494Z" fill="#16A34A"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M36 18C36 27.93 27.93 36 18 36C8.07 36 0 27.93 0 18C0 8.07 8.07 0 18 0C27.93 0 36 8.07 36 18ZM33 18C33 26.28 26.28 33 18 33C9.72 33 3 26.28 3 18C3 9.72 9.72 3 18 3C26.28 3 33 9.72 33 18Z" fill="#16A34A"/>
-                </g>
-                <defs>
-                <clipPath id="clip0_79_1017">
-                <rect width="36" height="36" fill="white"/>
-                </clipPath>
-                </defs>
-                </svg>
-                `;
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_79_1017)">
+            <path d="M26.5494 14.55C26.8226 14.2671 26.9738 13.8882 26.9704 13.4949C26.967 13.1016 26.8092 12.7254 26.5311 12.4473C26.253 12.1692 25.8768 12.0114 25.4835 12.008C25.0902 12.0046 24.7113 12.1558 24.4284 12.429L16.4784 20.379L11.5284 15.429C11.2455 15.1558 10.8666 15.0046 10.4733 15.008C10.08 15.0114 9.70378 15.1692 9.42567 15.4473C9.14756 15.7254 8.9898 16.1016 8.98638 16.4949C8.98297 16.8882 9.13416 17.2671 9.4074 17.55L15.4074 23.55C15.6887 23.8312 16.0701 23.9892 16.4679 23.9892C16.8656 23.9892 17.2471 23.8312 17.5284 23.55L26.5284 14.55H26.5494Z" fill="#16A34A"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M36 18C36 27.93 27.93 36 18 36C8.07 36 0 27.93 0 18C0 8.07 8.07 0 18 0C27.93 0 36 8.07 36 18ZM33 18C33 26.28 26.28 33 18 33C9.72 33 3 26.28 3 18C3 9.72 9.72 3 18 3C26.28 3 33 9.72 33 18Z" fill="#16A34A"/>
+            </g>
+            </svg>
+        `;
                 reasonGroup.style.display = 'none';
-                noteGroup.style.display = 'flex'; // hiện ô ghi chú
+                noteGroup.style.display = 'flex';
             } else if (action === 'cancel') {
                 title.textContent = 'Hủy đăng ký?';
                 desc.textContent = 'Bạn có chắc chắn muốn hủy đăng ký sự kiện này không? Thao tác này không thể hoàn tác.';
                 confirmBtn.textContent = 'Xác nhận hủy';
-                confirmBtn.className = 'modal-overlay__button modal-overlay__button--danger'; // đỏ
+                confirmBtn.className = 'modal-overlay__button modal-overlay__button--danger';
 
-                // Icon cảnh báo
                 iconWrapper.innerHTML = `
-                                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M18 3C9.72 3 3 9.72 3 18C3 26.28 9.72 33 18 33C26.28 33 33 26.28 33 18C33 9.72 26.28 3 18 3ZM18 19.5C17.175 19.5 16.5 18.825 16.5 18V12C16.5 11.175 17.175 10.5 18 10.5C18.825 10.5 19.5 11.175 19.5 12V18C19.5 18.825 18.825 19.5 18 19.5ZM19.5 25.5H16.5V22.5H19.5V25.5Z" fill="#EC1313"/>
-                                        </svg>
-                                        `;
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 3C9.72 3 3 9.72 3 18C3 26.28 9.72 33 18 33C26.28 33 33 26.28 33 18C33 9.72 26.28 3 18 3ZM18 19.5C17.175 19.5 16.5 18.825 16.5 18V12C16.5 11.175 17.175 10.5 18 10.5C18.825 10.5 19.5 11.175 19.5 12V18C19.5 18.825 18.825 19.5 18 19.5ZM19.5 25.5H16.5V22.5H19.5V25.5Z" fill="#EC1313"/>
+            </svg>
+        `;
 
-                reasonGroup.style.display = 'flex'; // hiện ô lý do hủy
+                reasonGroup.style.display = 'flex';
                 noteGroup.style.display = 'none';
             }
 
@@ -525,12 +525,16 @@
         }
 
         function closeEventModal() {
-            document.getElementById('eventModalOverlay').style.display = 'none';
-            // Reset textarea để tránh giữ giá trị cũ khi reload trang
-            const cancelReason = document.getElementById('cancelReason');
-            if (cancelReason) cancelReason.value = '';
-            const registerNote = document.getElementById('registerNote');
-            if (registerNote) registerNote.value = '';
+            const modal = document.getElementById('eventModalOverlay');
+            modal.style.display = 'none';
+
+            // RESET các textarea về rỗng
+            document.getElementById('cancelReason').value = '';
+            document.getElementById('registerNote').value = '';
+
+            // Re-enable nút confirm (nếu bị disable)
+            const confirmBtn = document.getElementById('eventModalConfirmBtn');
+            confirmBtn.disabled = false;
         }
 
         function closeEventModalOnOverlay(event) {
@@ -541,55 +545,47 @@
 
         function confirmEventAction() {
             const form = document.getElementById('form1');
+            const confirmBtn = document.getElementById('eventModalConfirmBtn');
 
-            // XÓA SẠCH tất cả hidden field cũ có name liên quan
-            // (tránh trường hợp mở modal nhiều lần tạo nhiều field)
-            ['btnAction', 'cancelReason', 'note'].forEach(name => {
-                const elements = form.querySelectorAll(`input[name="${name}"]`);
-                elements.forEach(el => el.remove());
-            });
+            if (confirmBtn.getAttribute('data-submitting') === 'true') return;
+            confirmBtn.setAttribute('data-submitting', 'true'); // Cờ đánh dấu đang submit
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Đang xử lý...';
 
-            // Tạo hidden field cho action
+            // Xóa sạch hidden field cũ
+            const oldFields = form.querySelectorAll('input[name="btnAction"], input[name="cancelReason"], input[name="note"]');
+            oldFields.forEach(el => el.remove());
+
+            // Thêm Action
             const hiddenAction = document.createElement('input');
             hiddenAction.type = 'hidden';
             hiddenAction.name = 'btnAction';
             hiddenAction.value = currentEventAction === 'register' ? 'register' : 'cancelRegistration';
             form.appendChild(hiddenAction);
 
-            // Nếu hủy → thêm lý do (chỉ 1 lần)
+            // Nếu hủy → thêm lý do
             if (currentEventAction === 'cancel') {
                 const reason = document.getElementById('cancelReason').value.trim();
-                if (reason) {
-                    const reasonField = document.createElement('input');
-                    reasonField.type = 'hidden';
-                    reasonField.name = 'cancelReason';
-                    reasonField.value = reason;
-                    form.appendChild(reasonField);
-                }
+                const reasonField = document.createElement('input');
+                reasonField.type = 'hidden';
+                reasonField.name = 'cancelReason';
+                reasonField.value = reason; // Có thể rỗng
+                form.appendChild(reasonField);
             }
 
-            // Nếu đăng ký → thêm note (chỉ 1 lần)
+            // Nếu đăng ký → thêm note
             if (currentEventAction === 'register') {
                 const note = document.getElementById('registerNote').value.trim();
-                if (note) {
-                    const noteField = document.createElement('input');
-                    noteField.type = 'hidden';
-                    noteField.name = 'note';
-                    noteField.value = note;
-                    form.appendChild(noteField);
-                }
+                const noteField = document.createElement('input');
+                noteField.type = 'hidden';
+                noteField.name = 'note';
+                noteField.value = note; // Có thể rỗng
+                form.appendChild(noteField);
             }
 
-            // Submit form
             form.submit();
+
         }
-        // Reset textarea khi trang load (sau khi submit form → reload)
-        window.addEventListener('load', function () {
-            const cancelReason = document.getElementById('cancelReason');
-            if (cancelReason) cancelReason.value = '';
-            const registerNote = document.getElementById('registerNote');
-            if (registerNote) registerNote.value = '';
-        });
     </script>
 </body>
 </html>

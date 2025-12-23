@@ -27,6 +27,7 @@ namespace EventManagementWeb.User
             if (Session["UserId"] == null)
             {
                 Response.Redirect("~/Account/Login.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
                 return;
             }
 
