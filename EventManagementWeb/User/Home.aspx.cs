@@ -9,7 +9,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.User
 {
-    public partial class Home : Page
+    public partial class Home : UserBasePage
     {
 
         public DataTable UpcomingEvents;

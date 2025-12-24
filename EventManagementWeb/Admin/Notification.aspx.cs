@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 
 namespace EventManagementWeb.Admin
 {
-    public partial class Notification : System.Web.UI.Page
+    public partial class Notification : AdminBasePage
     {
         public DataTable NotificationList;
         public int UnreadCount = 0;

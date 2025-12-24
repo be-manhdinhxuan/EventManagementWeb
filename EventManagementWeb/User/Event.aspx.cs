@@ -9,7 +9,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.User
 {
-    public partial class Event : Page
+    public partial class Event : UserBasePage
     {
         // Các biến public để .aspx truy cập
         public DataTable EventList;

@@ -7,7 +7,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.Admin
 {
-    public partial class EventManagement : Page
+    public partial class EventManagement : AdminBasePage
     {
         public DataTable EventList;
         public int CurrentPage = 1;

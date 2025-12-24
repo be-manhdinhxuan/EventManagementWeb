@@ -7,7 +7,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.Admin
 {
-    public partial class CreateNewUser : Page
+    public partial class CreateNewUser : AdminBasePage
     {
         public string FullName = "";
         public string Email = "";

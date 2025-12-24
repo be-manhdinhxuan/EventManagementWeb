@@ -8,7 +8,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.Admin
 {
-    public partial class CreateNewEvent : Page
+    public partial class CreateNewEvent : AdminBasePage
     {
         public string PageTitle = "Tạo sự kiện mới";
 

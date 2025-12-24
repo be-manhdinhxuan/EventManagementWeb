@@ -9,7 +9,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.User
 {
-    public partial class MyEvent : Page
+    public partial class MyEvent : UserBasePage
     {
         public string CurrentTab = "upcoming"; // Tab hiện tại
         public string CountUpcoming = "0";

@@ -8,7 +8,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.Admin
 {
-    public partial class UserManagement : Page
+    public partial class UserManagement : AdminBasePage
     {
         public DataTable UserList;
         public int CurrentPage = 1;

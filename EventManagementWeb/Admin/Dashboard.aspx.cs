@@ -9,7 +9,7 @@ using System.Web.UI;
 
 namespace EventManagementWeb.Admin
 {
-    public partial class Dashboard : System.Web.UI.Page
+    public partial class Dashboard : AdminBasePage
     {
         private const string ToastSessionKey = "ToastMessage";
         public int TotalEvents = 0;

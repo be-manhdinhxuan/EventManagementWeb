@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace EventManagementWeb.Admin
 {
-    public partial class Setting : System.Web.UI.Page
+    public partial class Setting : AdminBasePage
     {
         public DataTable HeaderNotificationList;
         public int UnreadCount = 0;
