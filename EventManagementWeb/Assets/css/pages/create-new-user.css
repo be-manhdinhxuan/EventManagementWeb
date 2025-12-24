@@ -1,0 +1,418 @@
+﻿:root {
+    --main-color: #111827;
+}
+
+input[type="file"] {
+    padding: 56px 24px;
+    background-color: var(--bg-white);
+    border-radius: 8px;
+    border: 1px dashed #D1D5DB;
+    font-weight: 600;
+    ]
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 42px;
+    background-color: var(--bg-white);
+    padding: 24px;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+}
+
+.form__label {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--main-color);
+    line-height: 1.5;
+}
+
+.form__input,
+.form__textarea,
+.form__select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+    font-size: 1.4rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+    .form__input:focus,
+    .form__textarea:focus,
+    .form__select:focus {
+        outline: none;
+        border-color: #1a73e8;
+    }
+
+    .form__input::placeholder,
+    .form__textarea::placeholder {
+        color: #999;
+    }
+
+.form__label-input {
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+
+.form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form__row-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form__input-checkbox {
+    margin-top: 16px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+.form__section-note {
+    padding: 32px 0;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #60708A;
+}
+
+.form__actions {
+    display: flex;
+    justify-content: space-between;
+    margin: 42px 0 90px;
+}
+
+.forn__actions-gr {
+    display: flex;
+    gap: 16px;
+}
+
+.btn {
+    min-width: 180px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn--back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    background: white;
+    color: #4B5563;
+}
+
+    .btn--back:hover {
+        color: var(--primary-color);
+    }
+
+.btn--back__mobile {
+    display: none;
+}
+
+.form__button--secondary {
+    background-color: #F3F4F6;
+    color: #181111;
+}
+
+    .form__button--secondary:hover {
+        background-color: #e0e0e0;
+    }
+
+.form__button--primary:hover {
+    background-color: #1557b0;
+}
+
+.modal-success-account {
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+    .modal-success-account.active {
+        display: flex;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Success Account Content - Element */
+.modal-success-account__content {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Success Account Icon Wrapper - Element */
+.modal-success-account__icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: #dcfce7;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 24px;
+}
+
+.modal-success-account__icon {
+    display: block;
+}
+
+/* Modal Success Account Title - Element */
+.modal-success-account__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+/* Modal Success Account Description - Element */
+.modal-success-account__description {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #854d0e;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Modal Success Account Form Group - Element */
+.modal-success-account__form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.modal-success-account__label {
+    text-align: left;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.modal-success-account__password-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+
+.modal-success-account__password-text {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--text-main);
+    letter-spacing: 2px;
+}
+
+.modal-success-account__copy-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+    .modal-success-account__copy-button:hover {
+        opacity: 0.7;
+    }
+
+.modal-success-account__notification {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #fefce8;
+    border: 1px solid #fef08a;
+    border-radius: 8px;
+}
+
+    .modal-success-account__notification svg {
+        width: 24px;
+        height: 24px;
+    }
+
+.modal-success-account__btn {
+    display: inline-block;
+    min-width: 250px;
+    height: var(--height);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 700;
+    font-size: 1.8rem;
+    line-height: 1.5;
+    text-align: center;
+    color: #fff;
+    background: var(--primary-color);
+}
+
+    .modal-success-account__btn:hover {
+        opacity: 0.9;
+        cursor: pointer;
+    }
+
+.modal-success-account__btn--confirm {
+    margin-top: 32px;
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+    .modal-success-account__btn--confirm:active {
+        background: #2a44b6;
+    }
+
+@media (max-width: 768px) {
+    .main {
+        padding: 16px;
+    }
+
+    .main__title {
+        font-size: 2rem;
+        margin-bottom: 24px;
+    }
+
+    .form__row,
+    .form__row--three {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .form__actions {
+        justify-content: flex-end;
+    }
+
+    .form__button {
+        width: 100%;
+    }
+
+    .btn--back {
+        display: none;
+    }
+
+    .btn--back__mobile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        font-size: 1.4rem;
+        font-weight: 500;
+        line-height: 1.25;
+        background: white;
+        color: #4B5563;
+    }
+
+        .btn--back__mobile:hover {
+            color: var(--primary-color);
+        }
+
+    .modal-success-account__content {
+        padding: 24px;
+        width: 95%;
+    }
+
+    .modal-success-account__title {
+        font-size: 2rem;
+    }
+
+    .modal-success-account__description {
+        font-size: 1.4rem;
+    }
+
+    .modal-success-account__btn {
+        width: 100%;
+    }
+}
+
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.success-label {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error-label {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 480px) {
+    .main {
+        padding: 12px;
+    }
+
+    .main__title {
+        font-size: 1.8rem;
+    }
+
+    .form {
+        gap: 16px;
+    }
+}
