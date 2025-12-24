@@ -16,8 +16,6 @@ namespace EventManagementWeb.Account
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // THAY THẾ SỰ KIỆN btnSend_Click:
-            // Kiểm tra gói tin POST gửi lên từ trình duyệt thông qua thuộc tính name của button/input
             if (Request.HttpMethod == "POST" && Request.Form["btnAction"] == "send_link")
             {
                 HandleForgotPassword();
@@ -26,7 +24,6 @@ namespace EventManagementWeb.Account
 
         private void HandleForgotPassword()
         {
-            // 1. TRUYỀN NHẬN DỮ LIỆU THUẦN: Lấy dữ liệu từ Request.Form thay vì dùng ID của Server Control
             string email = Request.Form["email"]?.Trim();
 
             if (string.IsNullOrEmpty(email))
