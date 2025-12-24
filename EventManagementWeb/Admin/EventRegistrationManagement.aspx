@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Đăng ký - Hội nghị...</title>
+    <title>Đăng ký - <%= EventTitle %></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../Assets/css/style.css" rel="stylesheet" />

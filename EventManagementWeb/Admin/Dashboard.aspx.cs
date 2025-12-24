@@ -36,10 +36,9 @@ namespace EventManagementWeb.Admin
             }
 
             int adminId = Convert.ToInt32(Session["UserId"]);
-            RecentEvents = new DataTable(); // Thêm dòng này
+            RecentEvents = new DataTable(); 
             RecentRegistrations = new DataTable();
 
-            // Xử lý Đăng xuất thủ công qua Request.Form
             if (Request.HttpMethod == "POST" && Request.Form["btnAction"] == "logout")
             {
                 HandleLogout();
@@ -235,12 +234,12 @@ namespace EventManagementWeb.Admin
                     // Mã hóa chuỗi để đảm bảo không có lỗi cú pháp JavaScript
                     string title = HttpUtility.JavaScriptStringEncode(toastData["Title"]);
                     string message = HttpUtility.JavaScriptStringEncode(toastData["Message"]);
-                    string type = toastData["Type"]; // Type thường không cần mã hóa
+                    string type = toastData["Type"]; 
 
                     // Cập nhật cách tạo script
                     string script = $"showToast('{title}', '{message}', '{type}');";
 
-                    // Đảm bảo bạn đang sử dụng "this" cho trang hiện tại
+                    
                     ClientScript.RegisterStartupScript(this.GetType(), "ShowToast", script, true);
 
                     Session.Remove(ToastSessionKey);

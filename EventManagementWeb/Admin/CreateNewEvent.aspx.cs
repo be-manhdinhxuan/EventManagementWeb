@@ -149,7 +149,6 @@ namespace EventManagementWeb.Admin
             }
             else
             {
-                // Cập nhật – không cần thay đổi CreatedBy (giữ nguyên người tạo)
                 sql = @"UPDATE Events SET 
                 Title = @title, Description = @desc, StartTime = @start, EndTime = @end,
                 Location = @loc, MaxCapacity = @max, RegistrationDeadline = @deadline, Status = @status";
@@ -174,7 +173,7 @@ namespace EventManagementWeb.Admin
                     if (imageUrl != null)
                         cmd.Parameters.AddWithValue("@image", imageUrl);
                     else if (EventId == 0)
-                        cmd.Parameters.AddWithValue("@image", DBNull.Value); // INSERT bắt buộc có @image
+                        cmd.Parameters.AddWithValue("@image", DBNull.Value); 
 
                     // CreatedBy chỉ thêm khi INSERT
                     if (EventId == 0)

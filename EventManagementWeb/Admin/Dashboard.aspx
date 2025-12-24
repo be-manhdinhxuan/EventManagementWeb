@@ -251,7 +251,7 @@
                                 { %>
                             <% foreach (System.Data.DataRow row in HeaderNotificationList.Rows)
                                 { %>
-                            <a href="EventDetail.aspx?id=<%= row["RelatedEventId"] ?? "" %>" class="notification-item <%= Convert.ToBoolean(row["IsRead"]) ? "" : "notification-item--unread" %>">
+                            <a href="EventRegistrationManagement.aspx?id=<%= row["RelatedEventId"] %>" class="notification-item <%= Convert.ToBoolean(row["IsRead"]) ? "" : "notification-item--unread" %>">
                                 <div class="notification-item__icon notification-item__icon--<%= row["Type"].ToString().ToLower() %>">
                                     <% if (row["Type"].ToString() == "Registration")
                                         { %>

@@ -250,9 +250,7 @@ namespace EventManagementWeb.Admin
 
                     if (rowsAffected > 0)
                     {
-                        // Optional: Tạo thông báo cho Admin
-                        // CreateSystemNotification($"Sự kiện ID {eventId} đã được xóa bởi Admin.");
-                        // Hoặc dùng toast nếu có
+                       
                     }
                 }
             }

@@ -249,25 +249,5 @@
             </nav>
         </div>
     </form>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
-    <script>
-        let editorInstance;
-        ClassicEditor
-            .create(document.querySelector('#txtDescription'))
-            .then(editor => {
-                editorInstance = editor;
-            })
-            .catch(error => console.error(error));
-
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('imgPreview').src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
 </body>
 </html>

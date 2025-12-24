@@ -112,7 +112,7 @@
         border-bottom: none;
     }
 
-.events__name {
+.events__name a {
     font-size: 1.4rem;
     color: var(--color-main);
     font-weight: 500;
