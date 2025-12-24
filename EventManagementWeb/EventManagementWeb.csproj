@@ -158,6 +158,8 @@
     <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Admin\EventManagement.aspx" />
     <Content Include="Admin\EventRegistrationManagement.aspx" />
+    <Content Include="Admin\Notification.aspx" />
+    <Content Include="Admin\Setting.aspx" />
     <Content Include="Admin\UserManagement.aspx" />
     <Content Include="Assets\css\common-layout.css" />
     <Content Include="Assets\css\component\modal-event.css" />
@@ -305,6 +307,20 @@
     </Compile>
     <Compile Include="Admin\EventRegistrationManagement.aspx.designer.cs">
       <DependentUpon>EventRegistrationManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Notification.aspx.cs">
+      <DependentUpon>Notification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Notification.aspx.designer.cs">
+      <DependentUpon>Notification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Setting.aspx.cs">
+      <DependentUpon>Setting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Setting.aspx.designer.cs">
+      <DependentUpon>Setting.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\UserManagement.aspx.cs">
       <DependentUpon>UserManagement.aspx</DependentUpon>
